@@ -26,23 +26,23 @@
   <header class="case-head wrap">
     <p><a href="../index.html#featured"><span lang="th">กลับหน้าแรก</span><span lang="en">Back to home</span></a></p>
     <h1><span lang="th">Eco-project: ทองคำ, S&amp;P 500, Bitcoin</span><span lang="en">Eco-project: gold, S&amp;P 500, Bitcoin</span></h1>
-    <p class="lede" lang="th">สามสินทรัพย์นี้สัมพันธ์กันแค่ไหน ปัจจัยมหภาคตัวไหนมีผล และพยากรณ์เป็นช่วงได้ดีกว่า random walk ไหม คำตอบคือสัมพันธ์กันน้อย และพยากรณ์ได้ดีกว่าเฉพาะ S&amp;P 500 ในเรื่องความกว้างของช่วง ไม่ใช่ทิศทาง</p>
+    <p class="lede" lang="th">สามสินทรัพย์นี้เคลื่อนไหวสัมพันธ์กันแค่ไหน ปัจจัยเศรษฐกิจตัวไหนมีผล และพยากรณ์ช่วงราคาได้ดีกว่า random walk หรือไม่ คำตอบคือสัมพันธ์กันน้อย และพยากรณ์ได้ดีกว่าเฉพาะ S&amp;P 500 โดยดีกว่าที่ความกว้างของช่วง ไม่ใช่ทิศทาง</p>
     <p class="lede" lang="en">How closely do these three assets move together, which macro factors matter, and can range forecasts beat a random walk? They are only weakly related, and only the S&amp;P 500 forecast beats a random walk, on the width of its range rather than its direction.</p>
     <dl class="case-facts">
       <dt><span lang="th">บทบาท</span><span lang="en">Role</span></dt>
       <dd><span lang="th">โปรเจกต์ส่วนตัว ตั้งแต่ดึงข้อมูล วิเคราะห์ พยากรณ์ ไปจนถึง dashboard สองภาษา</span><span lang="en">Personal project, from data collection and analysis to forecasts and a bilingual dashboard</span></dd>
       <dt><span lang="th">ข้อมูล</span><span lang="en">Data</span></dt>
-      <dd><span lang="th">50 series จาก FRED และ 13 tickers จาก Yahoo Finance ข้อมูลถึง 2026-10-23</span><span lang="en">50 FRED series and 13 Yahoo Finance tickers, data to 2026-10-23</span></dd>
+      <dd><span lang="th">50 ชุดข้อมูลจาก FRED และ 13 สินทรัพย์จาก Yahoo Finance ข้อมูลถึง 2026-10-23</span><span lang="en">50 FRED series and 13 Yahoo Finance tickers, data to 2026-10-23</span></dd>
       <dt><span lang="th">เครื่องมือ</span><span lang="en">Tools</span></dt>
       <dd>Python, pandas, statsmodels, arch (GJR-GARCH), Plotly</dd>
       <dt><span lang="th">ผล</span><span lang="en">Result</span></dt>
-      <dd><span lang="th">S&amp;P 500: qualified, ทองและ BTC: none (ใช้ random walk)</span><span lang="en">S&amp;P 500: qualified, gold and BTC: none (random walk shipped)</span></dd>
+      <dd><span lang="th">S&amp;P 500: ผ่านเกณฑ์, ทองและ BTC: ไม่ผ่าน (ใช้ random walk)</span><span lang="en">S&amp;P 500: qualified, gold and BTC: none (random walk shipped)</span></dd>
     </dl>
   </header>
 
   <section class="wrap">
     <h2><span lang="th">โจทย์</span><span lang="en">Problem</span></h2>
-    <p lang="th">ถ้าถือทองคำ หุ้นสหรัฐ และ Bitcoin ไว้ด้วยกัน คำถามที่ตามมาคือสามอย่างนี้เคลื่อนไหวไปด้วยกันไหม ปัจจัยเศรษฐกิจตัวไหนขับเคลื่อน และถ้าจะพยากรณ์ล่วงหน้า 1 ถึง 12 เดือน เราพูดได้มากแค่ไหนโดยไม่เกินกว่าที่ข้อมูลรองรับ</p>
+    <p lang="th">ถ้าถือทองคำ หุ้นสหรัฐ และ Bitcoin ไว้ด้วยกัน ก็ต้องรู้ว่าสามอย่างนี้ขึ้นลงไปด้วยกันไหม ปัจจัยเศรษฐกิจตัวไหนเป็นตัวขับ และถ้าจะพยากรณ์ล่วงหน้า 1 ถึง 12 เดือน เราพูดได้แค่ไหนโดยไม่เกินกว่าที่ข้อมูลรองรับ</p>
     <p lang="en">Holding gold, US equities and Bitcoin together raises three questions: do they move together, which economic factors drive them, and when forecasting 1 to 12 months ahead, how much can honestly be said beyond what the data supports?</p>
   </section>
 
@@ -50,10 +50,10 @@
     <h2><span lang="th">วิธีทำ</span><span lang="en">Process</span></h2>
     <h3><span lang="th">แก้ปัญหาข้อมูลก่อนวิเคราะห์</span><span lang="en">Fixing the data before analysis</span></h3>
     <ul lang="th">
-      <li>ตัวเลขมหภาครายเดือนเลื่อนไปวันที่ประกาศจริง ไม่ใช่วันของงวดข้อมูล เพื่อกัน look-ahead</li>
-      <li>คำนวณ return เฉพาะวันทำการของ NYSE เพราะการ forward-fill วันหยุดทำให้เกิด return เป็นศูนย์ปลอม</li>
-      <li>ใช้ log return และวิเคราะห์ BTC หลักตั้งแต่ปี 2015 เพราะช่วง 2010-2014 ราคาต่ำมากและซื้อขายบาง ส่วนน้ำมันใช้ Brent เพราะ WTI ติดลบในวันที่ 2020-04-20</li>
-      <li>เทียบความสัมพันธ์ด้วย return ไม่ใช่ระดับราคา เพราะ correlation ของระดับราคาเป็น spurious</li>
+      <li>เลื่อนตัวเลขเศรษฐกิจรายเดือนไปไว้ที่วันที่ประกาศจริง ไม่ใช่วันของงวดข้อมูล เพื่อไม่ให้แอบใช้ข้อมูลอนาคต</li>
+      <li>คำนวณ return เฉพาะวันทำการของ NYSE เพราะถ้าเติมราคาวันหยุดด้วยค่าเดิม จะได้ return เป็นศูนย์ที่ไม่ได้เกิดขึ้นจริง</li>
+      <li>ใช้ log return และวิเคราะห์ BTC เป็นหลักตั้งแต่ปี 2015 เพราะช่วง 2010-2014 ราคาต่ำมากและมีการซื้อขายน้อย ส่วนน้ำมันใช้ Brent เพราะราคา WTI ติดลบเมื่อ 2020-04-20</li>
+      <li>วัดความสัมพันธ์จาก return ไม่ใช่จากระดับราคา เพราะ correlation ของระดับราคามักสูงเกินจริงทั้งที่ไม่ได้สัมพันธ์กันจริง (spurious)</li>
     </ul>
     <ul lang="en">
       <li>Monthly macro figures were shifted to their approximate release dates instead of their reference period, to prevent look-ahead.</li>
@@ -64,8 +64,8 @@
 
     <h3><span lang="th">กติกาเลือกโมเดลพยากรณ์</span><span lang="en">Forecast model selection rule</span></h3>
     <ul lang="th">
-      <li>พยากรณ์เป็นช่วง P5 ถึง P95 ที่ 1, 3, 6 และ 12 เดือน ทดสอบย้อนหลังแบบ walk-forward เทียบกับ random walk</li>
-      <li>โมเดลทางเลือกจะแทน random walk ได้ต้องมี CRPS ต่ำกว่า reference ที่กำหนดทุกตัว ด้วย Diebold-Mariano แบบสองทางที่ p &lt; 0.0077 (Bonferroni 0.10/13 สำหรับ 13 โมเดลทางเลือก) ทั้งช่วงเต็มและช่วงตั้งแต่ปี 2015 และช่วง 90% ต้องครอบคลุมจริงระหว่าง 0.80 ถึง 0.97</li>
+      <li>พยากรณ์เป็นช่วง P5 ถึง P95 ล่วงหน้า 1, 3, 6 และ 12 เดือน และทดสอบย้อนหลังแบบ walk-forward เทียบกับ random walk</li>
+      <li>โมเดลอื่นจะใช้แทน random walk ได้ ต้องมี CRPS ต่ำกว่าโมเดลอ้างอิงทุกตัว ด้วย Diebold-Mariano แบบสองทางที่ p &lt; 0.0077 (Bonferroni 0.10/13 สำหรับ 13 โมเดลทางเลือก) ทั้งในช่วงเต็มและช่วงตั้งแต่ปี 2015 และช่วง 90% ต้องครอบคลุมค่าจริงได้ระหว่าง 0.80 ถึง 0.97</li>
       <li>ถ้าไม่มีโมเดลไหนผ่าน ให้ใช้ random walk ที่ปรับตาม volatility</li>
     </ul>
     <ul lang="en">
@@ -77,7 +77,7 @@
 
   <section class="wrap">
     <h2><span lang="th">สิ่งที่ส่งมอบ</span><span lang="en">Solution</span></h2>
-    <p lang="th">dashboard เป็นไฟล์ HTML ไฟล์เดียว ใช้ Plotly และฝังข้อมูลทั้งหมดไว้ เปิดได้แบบ offline ไม่มี network request มีภาษาไทยเป็นค่าเริ่มต้นพร้อมปุ่มสลับอังกฤษ ธีมสว่างและมืด และแสดงราคาทองเป็นบาทต่อบาททองด้วย มี reviewer ตรวจทุกขั้นก่อนปล่อย</p>
+    <p lang="th">dashboard เป็นไฟล์ HTML ไฟล์เดียว สร้างด้วย Plotly และฝังข้อมูลไว้ทั้งหมด เปิดได้โดยไม่ต้องต่ออินเทอร์เน็ต ใช้ภาษาไทยเป็นค่าเริ่มต้นและสลับเป็นอังกฤษได้ มีธีมสว่างและมืด และแสดงราคาทองเป็นบาทต่อทองหนึ่งบาทด้วย ทุกขั้นผ่านการตรวจทานก่อนปล่อย</p>
     <p lang="en">The dashboard is one self-contained HTML file with Plotly and all data inlined, so it opens offline and makes no network requests. Thai is the default with an English toggle, it has light and dark themes, and it also shows gold in Thai baht per baht-weight. Each stage passed an independent review before release.</p>
 
     <figure class="case-figure" lang="th">
@@ -93,7 +93,7 @@
   <section class="wrap">
     <h2><span lang="th">ผลลัพธ์</span><span lang="en">Results</span></h2>
     <h3><span lang="th">ความสัมพันธ์</span><span lang="en">Relationships</span></h3>
-    <p lang="th">จาก log return รายสัปดาห์ตั้งแต่ปี 2015 (n=617) correlation ของ BTC กับ S&amp;P 500 คือ 0.19 (ช่วงเชื่อมั่น 95%: 0.11 ถึง 0.26) ทองกับ S&amp;P 500 คือ 0.15 และ BTC กับทองคือ 0.08 ไม่มีคู่ไหนอธิบายความผันผวนของอีกฝ่ายได้เกิน 4% และ BTC ใกล้หุ้นมากกว่าทอง</p>
+    <p lang="th">จาก log return รายสัปดาห์ตั้งแต่ปี 2015 (n=617) correlation ของ BTC กับ S&amp;P 500 คือ 0.19 (ช่วงเชื่อมั่น 95%: 0.11 ถึง 0.26) ทองกับ S&amp;P 500 คือ 0.15 และ BTC กับทองคือ 0.08 ไม่มีคู่ไหนอธิบายการเคลื่อนไหวของอีกฝ่ายได้เกิน 4% และ BTC เคลื่อนไหวใกล้เคียงหุ้นมากกว่าทอง</p>
     <p lang="en">On weekly log returns since 2015 (n=617), BTC and the S&amp;P 500 correlate at 0.19 (95% CI 0.11 to 0.26), gold and the S&amp;P 500 at 0.15, and BTC and gold at only 0.08. No pair explains more than 4% of the other's variance, and BTC sits closer to equities than to gold.</p>
 
     <h3><span lang="th">การพยากรณ์</span><span lang="en">Forecasts</span></h3>
@@ -101,7 +101,7 @@
       <table class="result-table">
         <thead><tr><th>สินทรัพย์</th><th>โมเดลที่ใช้</th><th>skill เทียบ random walk</th><th>ความหมาย</th></tr></thead>
         <tbody>
-          <tr><td>S&amp;P 500</td><td>fhs0_mean (GJR-GARCH-FHS)</td><td class="sig">qualified</td><td>ช่วงพยากรณ์ตามจังหวะ volatility ดีกว่า แต่ทายทิศไม่ได้ดีกว่า: hit rate ที่ 12 เดือน 0.86 เท่ากับ base rate 0.86</td></tr>
+          <tr><td>S&amp;P 500</td><td>fhs0_mean (GJR-GARCH-FHS)</td><td class="sig">qualified</td><td>ปรับความกว้างของช่วงตาม volatility ได้ดีกว่า แต่ทายทิศทางไม่ได้ดีกว่า: hit rate ที่ 12 เดือน 0.86 เท่ากับ base rate 0.86</td></tr>
           <tr><td>ทองคำ</td><td>rw_drift</td><td>none</td><td>ไม่มีโมเดลไหนผ่านเกณฑ์ ใช้ random walk ที่มี drift</td></tr>
           <tr><td>Bitcoin</td><td>rw0</td><td>none</td><td>ไม่มีโมเดลไหนผ่านเกณฑ์ ใช้ random walk ไม่มี drift โอกาสขึ้นจึงเป็น 50% ตามนิยาม ไม่ใช่สัญญาณ</td></tr>
         </tbody>
@@ -117,15 +117,15 @@
         </tbody>
       </table>
     </div>
-    <p class="source"><span lang="th">ที่มา: reports/model_card.md, reports/insights.md (I01) ไม่แสดงราคาที่พยากรณ์ เพราะเป็นผลของวันเดียวและไม่ใช่คำแนะนำการลงทุน</span><span lang="en">Source: reports/model_card.md, reports/insights.md (I01). Forecast prices are not shown: they come from a single origin date and are not investment advice.</span></p>
+    <p class="source"><span lang="th">ที่มา: reports/model_card.md, reports/insights.md (I01) ไม่แสดงราคาที่พยากรณ์ไว้ เพราะเป็นผลจากการพยากรณ์ ณ วันเดียว และไม่ใช่คำแนะนำการลงทุน</span><span lang="en">Source: reports/model_card.md, reports/insights.md (I01). Forecast prices are not shown: they come from a single origin date and are not investment advice.</span></p>
   </section>
 
   <section class="wrap">
     <h2><span lang="th">สิ่งที่ได้เรียนรู้</span><span lang="en">Learnings</span></h2>
     <ul lang="th">
-      <li><strong>ความน่าจะเป็นขึ้นอาจมาจากสมมติฐาน ไม่ใช่ skill</strong> โอกาสขึ้นของทองที่ 12 เดือนมาจาก drift ในอดีตที่สมมติไว้เท่านั้น ถ้าไม่มี drift จะเหลือ 50% ผมจึงเขียนอธิบายไว้ข้างตัวเลขทุกจุดใน dashboard</li>
-      <li><strong>เกณฑ์เข้มกันการเลือกโมเดลที่ฟลุ้ค</strong> การทดสอบ 13 โมเดลทางเลือกโดยไม่ปรับ Bonferroni จะทำให้เจอโมเดลที่ดูดีโดยบังเอิญ</li>
-      <li><strong>ข้อจำกัด</strong> การเลือกโมเดลใช้ backtest ชุดเดียวโดยไม่มี hold-out แยก skill ที่วัดได้จึงน่าจะดีเกินจริง ซึ่งเขียนไว้ใน model card แล้ว</li>
+      <li><strong>โอกาสที่ราคาจะขึ้นอาจมาจากสมมติฐาน ไม่ใช่ความสามารถของโมเดล</strong> โอกาสขึ้นของทองที่ 12 เดือนมาจาก drift ในอดีตที่สมมติไว้เท่านั้น ถ้าตัด drift ออกจะเหลือ 50% ผมจึงเขียนคำอธิบายไว้ข้างตัวเลขนี้ทุกจุดใน dashboard</li>
+      <li><strong>เกณฑ์ที่เข้มช่วยกันการเลือกโมเดลที่ดูดีเพราะฟลุก</strong> ถ้าทดสอบ 13 โมเดลโดยไม่ปรับ Bonferroni ก็มีโอกาสเจอโมเดลที่ดูดีโดยบังเอิญ</li>
+      <li><strong>ข้อจำกัด</strong> การเลือกโมเดลใช้ backtest ชุดเดียว ไม่มีข้อมูล hold-out แยกไว้ ผลที่วัดได้จึงน่าจะดีเกินจริง ซึ่งเขียนไว้ใน model card แล้ว</li>
     </ul>
     <ul lang="en">
       <li><strong>An upward probability can be an assumption, not skill.</strong> Gold's 12-month P(up) comes only from the assumed historical drift; with zero drift it would be 50%. That note sits next to every such figure in the dashboard.</li>

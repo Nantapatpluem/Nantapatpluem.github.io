@@ -175,7 +175,7 @@ section { margin-top: 4.5rem; }
   max-width: 22ch;
   margin-bottom: 2rem;
 }
-.hero-title:lang(th) { line-height: 1.35; max-width: 24ch; }
+.hero-title:lang(th) { font-size: calc(var(--fs-hero) * 0.8); line-height: 1.35; max-width: 30ch; }
 
 .hero-chart { margin: 0; }
 .hero-chart svg { width: 100%; }
@@ -371,3 +371,9 @@ figcaption {
   .profile-photo { width: 8rem; }
 }
 .case-body .contact { padding-left: 0; }
+
+/* Thai phrase groups: keep each phrase on one line where it fits */
+.ph { display: inline-block; }
+@media (max-width: 480px) {
+  .hero-title:lang(th) { font-size: 1.5rem; }
+}
