@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Case study: range forecasts for gold, the S&amp;P 500 and Bitcoin at 1 to 12 months, tested against a random walk.">
+<title data-title-th="Eco-project: ทองคำ, S&amp;P 500, Bitcoin" data-title-en="Eco-project: gold, S&amp;P 500, Bitcoin">Eco-project: gold, S&amp;P 500, Bitcoin</title>
+<script>(function(){try{var s=localStorage.getItem("site-lang"),t=localStorage.getItem("site-theme")}catch(e){}var d=document.documentElement,l=(s==="th"||s==="en")?s:((navigator.language||"").toLowerCase().indexOf("th")===0?"th":"en");d.setAttribute("data-lang",l);d.setAttribute("lang",l);if(t==="light"||t==="dark")d.setAttribute("data-theme",t)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/site-config.js" defer></script>
+<script src="../js/main.js" defer></script>
+</head>
+<body>
+<header class="site-header wide">
+  <a class="home" href="../index.html"><span lang="th" data-site="nameTh">นันทพัทธ์ ใจการุณ</span><span lang="en" data-site="nameEn">Nantapat Jaikaroon</span></a>
+  <div class="controls">
+    <button type="button" class="lang-toggle"><span data-l="th" class="off">TH</span> | <span data-l="en" class="on">EN</span><span class="sr-only" lang="th"> (เปลี่ยนภาษา)</span><span class="sr-only" lang="en"> (change language)</span></button>
+    <button type="button" class="theme-toggle" data-label-th="ธีมมืด" data-label-en="Dark theme" aria-label="Dark theme" aria-pressed="false">◐</button>
+  </div>
+</header>
+
+<main class="case-body">
+  <header class="case-head wrap">
+    <p><a href="../index.html#featured"><span lang="th">กลับหน้าแรก</span><span lang="en">Back to home</span></a></p>
+    <h1><span lang="th">Eco-project: ทองคำ, S&amp;P 500, Bitcoin</span><span lang="en">Eco-project: gold, S&amp;P 500, Bitcoin</span></h1>
+    <p class="lede" lang="th">สามสินทรัพย์นี้สัมพันธ์กันแค่ไหน ปัจจัยมหภาคตัวไหนมีผล และพยากรณ์เป็นช่วงได้ดีกว่า random walk ไหม คำตอบคือสัมพันธ์กันน้อย และพยากรณ์ได้ดีกว่าเฉพาะ S&amp;P 500 ในเรื่องความกว้างของช่วง ไม่ใช่ทิศทาง</p>
+    <p class="lede" lang="en">How closely do these three assets move together, which macro factors matter, and can range forecasts beat a random walk? They are only weakly related, and only the S&amp;P 500 forecast beats a random walk, on the width of its range rather than its direction.</p>
+    <dl class="case-facts">
+      <dt><span lang="th">บทบาท</span><span lang="en">Role</span></dt>
+      <dd><span lang="th">โปรเจกต์ส่วนตัว ตั้งแต่ดึงข้อมูล วิเคราะห์ พยากรณ์ ไปจนถึง dashboard สองภาษา</span><span lang="en">Personal project, from data collection and analysis to forecasts and a bilingual dashboard</span></dd>
+      <dt><span lang="th">ข้อมูล</span><span lang="en">Data</span></dt>
+      <dd><span lang="th">50 series จาก FRED และ 13 tickers จาก Yahoo Finance ข้อมูลถึง 2026-10-23</span><span lang="en">50 FRED series and 13 Yahoo Finance tickers, data to 2026-10-23</span></dd>
+      <dt><span lang="th">เครื่องมือ</span><span lang="en">Tools</span></dt>
+      <dd>Python, pandas, statsmodels, arch (GJR-GARCH), Plotly</dd>
+      <dt><span lang="th">ผล</span><span lang="en">Result</span></dt>
+      <dd><span lang="th">S&amp;P 500: qualified, ทองและ BTC: none (ใช้ random walk)</span><span lang="en">S&amp;P 500: qualified, gold and BTC: none (random walk shipped)</span></dd>
+    </dl>
+  </header>
+
+  <section class="wrap">
+    <h2><span lang="th">โจทย์</span><span lang="en">Problem</span></h2>
+    <p lang="th">ถ้าถือทองคำ หุ้นสหรัฐ และ Bitcoin ไว้ด้วยกัน คำถามที่ตามมาคือสามอย่างนี้เคลื่อนไหวไปด้วยกันไหม ปัจจัยเศรษฐกิจตัวไหนขับเคลื่อน และถ้าจะพยากรณ์ล่วงหน้า 1 ถึง 12 เดือน เราพูดได้มากแค่ไหนโดยไม่เกินกว่าที่ข้อมูลรองรับ</p>
+    <p lang="en">Holding gold, US equities and Bitcoin together raises three questions: do they move together, which economic factors drive them, and when forecasting 1 to 12 months ahead, how much can honestly be said beyond what the data supports?</p>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">วิธีทำ</span><span lang="en">Process</span></h2>
+    <h3><span lang="th">แก้ปัญหาข้อมูลก่อนวิเคราะห์</span><span lang="en">Fixing the data before analysis</span></h3>
+    <ul lang="th">
+      <li>ตัวเลขมหภาครายเดือนเลื่อนไปวันที่ประกาศจริง ไม่ใช่วันของงวดข้อมูล เพื่อกัน look-ahead</li>
+      <li>คำนวณ return เฉพาะวันทำการของ NYSE เพราะการ forward-fill วันหยุดทำให้เกิด return เป็นศูนย์ปลอม</li>
+      <li>ใช้ log return และวิเคราะห์ BTC หลักตั้งแต่ปี 2015 เพราะช่วง 2010-2014 ราคาต่ำมากและซื้อขายบาง ส่วนน้ำมันใช้ Brent เพราะ WTI ติดลบในวันที่ 2020-04-20</li>
+      <li>เทียบความสัมพันธ์ด้วย return ไม่ใช่ระดับราคา เพราะ correlation ของระดับราคาเป็น spurious</li>
+    </ul>
+    <ul lang="en">
+      <li>Monthly macro figures were shifted to their approximate release dates instead of their reference period, to prevent look-ahead.</li>
+      <li>Returns use NYSE business days only, since forward-filled holidays create fake zero returns.</li>
+      <li>Log returns throughout. The main BTC window starts in 2015 because 2010-2014 prices were tiny and illiquid. Oil uses Brent because WTI went negative on 2020-04-20.</li>
+      <li>Relationships use returns, not price levels, because level-on-level correlation is spurious.</li>
+    </ul>
+
+    <h3><span lang="th">กติกาเลือกโมเดลพยากรณ์</span><span lang="en">Forecast model selection rule</span></h3>
+    <ul lang="th">
+      <li>พยากรณ์เป็นช่วง P5 ถึง P95 ที่ 1, 3, 6 และ 12 เดือน ทดสอบย้อนหลังแบบ walk-forward เทียบกับ random walk</li>
+      <li>โมเดลทางเลือกจะแทน random walk ได้ต้องมี CRPS ต่ำกว่า reference ที่กำหนดทุกตัว ด้วย Diebold-Mariano แบบสองทางที่ p &lt; 0.0077 (Bonferroni 0.10/13 สำหรับ 13 โมเดลทางเลือก) ทั้งช่วงเต็มและช่วงตั้งแต่ปี 2015 และช่วง 90% ต้องครอบคลุมจริงระหว่าง 0.80 ถึง 0.97</li>
+      <li>ถ้าไม่มีโมเดลไหนผ่าน ให้ใช้ random walk ที่ปรับตาม volatility</li>
+    </ul>
+    <ul lang="en">
+      <li>Forecasts are P5 to P95 ranges at 1, 3, 6 and 12 months, backtested walk-forward against a random walk.</li>
+      <li>A candidate replaces the random walk only if it beats every required reference on CRPS with a two-sided Diebold-Mariano p &lt; 0.0077 (Bonferroni 0.10/13 over 13 candidates), on both the full window and origins from 2015, with 90% coverage between 0.80 and 0.97.</li>
+      <li>If no candidate passes, a volatility-calibrated random walk ships.</li>
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">สิ่งที่ส่งมอบ</span><span lang="en">Solution</span></h2>
+    <p lang="th">dashboard เป็นไฟล์ HTML ไฟล์เดียว ใช้ Plotly และฝังข้อมูลทั้งหมดไว้ เปิดได้แบบ offline ไม่มี network request มีภาษาไทยเป็นค่าเริ่มต้นพร้อมปุ่มสลับอังกฤษ ธีมสว่างและมืด และแสดงราคาทองเป็นบาทต่อบาททองด้วย มี reviewer ตรวจทุกขั้นก่อนปล่อย</p>
+    <p lang="en">The dashboard is one self-contained HTML file with Plotly and all data inlined, so it opens offline and makes no network requests. Thai is the default with an English toggle, it has light and dark themes, and it also shows gold in Thai baht per baht-weight. Each stage passed an independent review before release.</p>
+
+    <figure class="case-figure" lang="th">
+      <img src="../assets/img/eco-map-th.png" width="1208" height="530" loading="lazy" alt="แผนผังความสัมพันธ์ของทองคำ S&amp;P 500 และบิตคอยน์ พร้อมตารางปัจจัยมหภาค" data-alt-th="แผนผังความสัมพันธ์ของทองคำ S&amp;P 500 และบิตคอยน์ (0.08, 0.19, 0.15) พร้อมตารางปัจจัยมหภาคที่มีนัยสำคัญ" data-alt-en="Correlation map of gold, the S&amp;P 500 and Bitcoin (0.08, 0.19, 0.15) with a table of significant macro factors">
+      <figcaption>ภาพจาก dashboard: correlation รายสัปดาห์ตั้งแต่ปี 2015 และปัจจัยมหภาคที่มีนัยสำคัญหลังปรับ BH (q &lt; 0.05)</figcaption>
+    </figure>
+    <figure class="case-figure" lang="en">
+      <img src="../assets/img/eco-map-en.png" width="1208" height="530" loading="lazy" alt="Correlation map of gold, the S&amp;P 500 and Bitcoin with a table of macro factors" data-alt-th="แผนผังความสัมพันธ์ของทองคำ S&amp;P 500 และบิตคอยน์ (0.08, 0.19, 0.15) พร้อมตารางปัจจัยมหภาคที่มีนัยสำคัญ" data-alt-en="Correlation map of gold, the S&amp;P 500 and Bitcoin (0.08, 0.19, 0.15) with a table of significant macro factors">
+      <figcaption>From the dashboard: weekly correlation since 2015 and the macro factors that stay significant after BH adjustment (q &lt; 0.05).</figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">ผลลัพธ์</span><span lang="en">Results</span></h2>
+    <h3><span lang="th">ความสัมพันธ์</span><span lang="en">Relationships</span></h3>
+    <p lang="th">จาก log return รายสัปดาห์ตั้งแต่ปี 2015 (n=617) correlation ของ BTC กับ S&amp;P 500 คือ 0.19 (ช่วงเชื่อมั่น 95%: 0.11 ถึง 0.26) ทองกับ S&amp;P 500 คือ 0.15 และ BTC กับทองคือ 0.08 ไม่มีคู่ไหนอธิบายความผันผวนของอีกฝ่ายได้เกิน 4% และ BTC ใกล้หุ้นมากกว่าทอง</p>
+    <p lang="en">On weekly log returns since 2015 (n=617), BTC and the S&amp;P 500 correlate at 0.19 (95% CI 0.11 to 0.26), gold and the S&amp;P 500 at 0.15, and BTC and gold at only 0.08. No pair explains more than 4% of the other's variance, and BTC sits closer to equities than to gold.</p>
+
+    <h3><span lang="th">การพยากรณ์</span><span lang="en">Forecasts</span></h3>
+    <div class="table-scroll" lang="th" tabindex="0" role="region" data-label-th="ตารางการพยากรณ์" data-label-en="Forecast table" aria-label="Forecast table">
+      <table class="result-table">
+        <thead><tr><th>สินทรัพย์</th><th>โมเดลที่ใช้</th><th>skill เทียบ random walk</th><th>ความหมาย</th></tr></thead>
+        <tbody>
+          <tr><td>S&amp;P 500</td><td>fhs0_mean (GJR-GARCH-FHS)</td><td class="sig">qualified</td><td>ช่วงพยากรณ์ตามจังหวะ volatility ดีกว่า แต่ทายทิศไม่ได้ดีกว่า: hit rate ที่ 12 เดือน 0.86 เท่ากับ base rate 0.86</td></tr>
+          <tr><td>ทองคำ</td><td>rw_drift</td><td>none</td><td>ไม่มีโมเดลไหนผ่านเกณฑ์ ใช้ random walk ที่มี drift</td></tr>
+          <tr><td>Bitcoin</td><td>rw0</td><td>none</td><td>ไม่มีโมเดลไหนผ่านเกณฑ์ ใช้ random walk ไม่มี drift โอกาสขึ้นจึงเป็น 50% ตามนิยาม ไม่ใช่สัญญาณ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-scroll" lang="en" tabindex="0" role="region" data-label-th="ตารางการพยากรณ์" data-label-en="Forecast table" aria-label="Forecast table">
+      <table class="result-table">
+        <thead><tr><th>Asset</th><th>Model shipped</th><th>Skill vs random walk</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>S&amp;P 500</td><td>fhs0_mean (GJR-GARCH-FHS)</td><td class="sig">qualified</td><td>A better-calibrated range through volatility timing, not direction: 12-month hit rate 0.86 equals the base rate of 0.86</td></tr>
+          <tr><td>Gold</td><td>rw_drift</td><td>none</td><td>No candidate passed; a random walk with drift ships</td></tr>
+          <tr><td>Bitcoin</td><td>rw0</td><td>none</td><td>No candidate passed; a zero-drift random walk ships, so P(up) is 50% by construction, not a signal</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="source"><span lang="th">ที่มา: reports/model_card.md, reports/insights.md (I01) ไม่แสดงราคาที่พยากรณ์ เพราะเป็นผลของวันเดียวและไม่ใช่คำแนะนำการลงทุน</span><span lang="en">Source: reports/model_card.md, reports/insights.md (I01). Forecast prices are not shown: they come from a single origin date and are not investment advice.</span></p>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">สิ่งที่ได้เรียนรู้</span><span lang="en">Learnings</span></h2>
+    <ul lang="th">
+      <li><strong>ความน่าจะเป็นขึ้นอาจมาจากสมมติฐาน ไม่ใช่ skill</strong> โอกาสขึ้นของทองที่ 12 เดือนมาจาก drift ในอดีตที่สมมติไว้เท่านั้น ถ้าไม่มี drift จะเหลือ 50% ผมจึงเขียนอธิบายไว้ข้างตัวเลขทุกจุดใน dashboard</li>
+      <li><strong>เกณฑ์เข้มกันการเลือกโมเดลที่ฟลุ้ค</strong> การทดสอบ 13 โมเดลทางเลือกโดยไม่ปรับ Bonferroni จะทำให้เจอโมเดลที่ดูดีโดยบังเอิญ</li>
+      <li><strong>ข้อจำกัด</strong> การเลือกโมเดลใช้ backtest ชุดเดียวโดยไม่มี hold-out แยก skill ที่วัดได้จึงน่าจะดีเกินจริง ซึ่งเขียนไว้ใน model card แล้ว</li>
+    </ul>
+    <ul lang="en">
+      <li><strong>An upward probability can be an assumption, not skill.</strong> Gold's 12-month P(up) comes only from the assumed historical drift; with zero drift it would be 50%. That note sits next to every such figure in the dashboard.</li>
+      <li><strong>A strict bar stops lucky picks.</strong> Testing 13 candidates without a Bonferroni correction would surface models that look good by chance.</li>
+      <li><strong>Limits.</strong> Selection uses one backtest with no separate hold-out, so measured skill is likely optimistic. The model card says so.</li>
+    </ul>
+  </section>
+
+  <p class="wrap code-link"><a href="https://github.com/Nantapatpluem/portfolio-projects/tree/main/eco-project"><span lang="th">ดูโค้ดและรายงานบน GitHub</span><span lang="en">Code and reports on GitHub</span></a></p>
+
+  <nav class="case-nav wrap" data-label-th="กรณีศึกษา" data-label-en="Case studies" aria-label="Case studies">
+    <a href="macro-news.html"><span lang="th">ก่อนหน้า: Macro News &amp; Volatility</span><span lang="en">Previous: Macro News &amp; Volatility</span></a>
+    <a href="volatility.html"><span lang="th">ถัดไป: Cross-Asset Volatility</span><span lang="en">Next: Cross-Asset Volatility</span></a>
+  </nav>
+</main>
+
+<footer class="site-footer wide">
+  <p lang="th">ไม่ใช่คำแนะนำการลงทุน</p>
+  <p lang="en">Not investment advice.</p>
+</footer>
+</body>
+</html>

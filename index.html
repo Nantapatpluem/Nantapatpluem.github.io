@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-title-th="ผลงาน: พยากรณ์ ทดสอบ และรายงานผลตามจริง" data-title-en="Portfolio: forecasts, tested and reported honestly">Portfolio: forecasts, tested and reported honestly</title>
+<meta name="description" content="Data and quant research portfolio: volatility forecasting, macro news, gold/S&amp;P 500/Bitcoin forecasts.">
+<script>(function(){try{var s=localStorage.getItem("site-lang"),t=localStorage.getItem("site-theme")}catch(e){}var d=document.documentElement,l=(s==="th"||s==="en")?s:((navigator.language||"").toLowerCase().indexOf("th")===0?"th":"en");d.setAttribute("data-lang",l);d.setAttribute("lang",l);if(t==="light"||t==="dark")d.setAttribute("data-theme",t)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/site-config.js" defer></script>
+<script src="js/main.js" defer></script>
+</head>
+<body>
+<header class="site-header wide">
+  <a class="home" href="index.html"><span lang="th" data-site="nameTh">นันทพัทธ์ ใจการุณ</span><span lang="en" data-site="nameEn">Nantapat Jaikaroon</span></a>
+  <div class="controls">
+    <button type="button" class="lang-toggle"><span data-l="th" class="off">TH</span> | <span data-l="en" class="on">EN</span><span class="sr-only" lang="th"> (เปลี่ยนภาษา)</span><span class="sr-only" lang="en"> (change language)</span></button>
+    <button type="button" class="theme-toggle" data-label-th="ธีมมืด" data-label-en="Dark theme" aria-label="Dark theme" aria-pressed="false">◐</button>
+  </div>
+</header>
+
+<main>
+  <section id="intro" class="wide">
+    <h1 class="hero-title" lang="th">ผมทดสอบว่าไอเดียใช้ได้จริงนอกข้อมูลที่ใช้สร้างโมเดลไหม และรายงานผลแม้มันจะใช้ไม่ได้</h1>
+    <h1 class="hero-title" lang="en">I test whether an idea still works on data the model has never seen, and I report the result even when it doesn't.</h1>
+
+    <figure class="hero-chart">
+<svg viewBox="0 0 960 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SPY next-day volatility, HAR-RV forecast vs realized, annualized percent, 2025-10-31 to 2026-10-30. Blue line: forecast. Red line: realized. Shaded band: 80% range from development-period forecast errors." data-label-en="SPY next-day volatility, HAR-RV forecast vs realized, annualized percent, 2025-10-31 to 2026-10-30. Blue line: forecast. Red line: realized. Shaded band: 80% range from development-period forecast errors." data-label-th="ความผันผวนวันถัดไปของ SPY ค่าพยากรณ์ HAR-RV เทียบค่าจริง เป็นเปอร์เซ็นต์ต่อปี 2025-10-31 ถึง 2026-10-30 เส้นสีน้ำเงินคือค่าพยากรณ์ เส้นสีแดงคือค่าจริง แถบแรเงาคือช่วง 80% จากความคลาดเคลื่อนในช่วงพัฒนาโมเดล">
+<line class="grid" x1="64" x2="948" y1="324.0" y2="324.0"/>
+<text x="56" y="328.0" text-anchor="end">0%</text>
+<line class="grid" x1="64" x2="948" y1="220.0" y2="220.0"/>
+<text x="56" y="224.0" text-anchor="end">10%</text>
+<line class="grid" x1="64" x2="948" y1="116.0" y2="116.0"/>
+<text x="56" y="120.0" text-anchor="end">20%</text>
+<line class="grid" x1="64" x2="948" y1="12.0" y2="12.0"/>
+<text x="56" y="16.0" text-anchor="end">30%</text>
+<text x="71.3" y="352" text-anchor="start">Nov 2025</text>
+<text x="217.0" y="352" text-anchor="start">Jan 2026</text>
+<text x="360.3" y="352" text-anchor="start">Mar</text>
+<text x="506.0" y="352" text-anchor="start">May</text>
+<text x="654.1" y="352" text-anchor="start">Jul</text>
+<text x="804.7" y="352" text-anchor="start">Sep</text>
+<path class="band" fill="var(--band)" stroke="var(--muted)" stroke-width="1" stroke-linejoin="round" vector-effect="non-scaling-stroke" d="M64.0,183.6 L71.3,182.7 L73.7,192.2 L76.1,171.3 L78.6,193.6 L81.0,158.6 L88.3,148.4 L90.7,189.3 L93.1,203.9 L95.6,196.4 L98.0,159.8 L105.3,141.4 L107.7,144.3 L110.1,118.3 L112.6,124.8 L115.0,76.8 L122.3,84.4 L124.7,141.9 L127.1,109.2 L141.7,179.1 L144.1,164.4 L146.6,196.6 L149.0,191.6 L156.3,203.7 L158.7,203.2 L161.1,227.7 L163.6,177.9 L166.0,178.1 L173.3,160.5 L175.7,162.9 L178.1,161.8 L180.6,165.4 L183.0,147.4 L190.3,190.6 L192.7,220.1 L207.3,242.1 L209.7,243.4 L212.1,247.9 L217.0,229.8 L224.3,188.3 L226.7,233.2 L229.1,230.9 L231.6,225.2 L234.0,209.0 L241.3,207.9 L243.7,233.8 L246.1,216.1 L248.6,180.1 L251.0,218.1 L260.7,211.6 L263.1,183.7 L265.6,150.1 L268.0,202.4 L275.3,199.8 L277.7,220.1 L280.1,233.0 L282.6,210.8 L285.0,172.4 L292.3,159.1 L294.7,194.6 L297.1,153.3 L299.6,127.8 L302.0,127.2 L309.3,156.3 L311.7,189.5 L314.1,185.7 L316.6,162.3 L319.0,156.0 L328.7,144.1 L331.1,115.2 L333.6,166.7 L336.0,144.9 L343.3,139.1 L345.7,157.0 L348.1,166.0 L350.6,218.3 L353.0,157.9 L360.3,166.2 L362.7,148.5 L365.1,127.7 L367.6,157.4 L370.0,123.6 L377.3,118.2 L379.7,101.5 L382.1,131.6 L384.6,136.8 L387.0,127.9 L394.3,134.1 L396.7,157.9 L399.1,178.5 L401.6,161.5 L404.0,139.2 L411.3,137.3 L413.7,122.4 L416.1,125.5 L418.6,140.8 L421.0,150.5 L428.3,136.6 L430.7,141.4 L433.1,104.5 L435.6,161.7 L445.3,106.4 L447.7,150.1 L450.1,124.1 L452.6,160.6 L455.0,168.9 L462.3,205.6 L464.7,186.5 L467.1,207.3 L469.6,199.8 L472.0,197.9 L479.3,202.4 L481.7,212.8 L484.1,165.4 L486.6,213.1 L489.0,166.6 L496.3,203.8 L498.7,215.0 L501.1,216.6 L503.6,198.8 L506.0,199.1 L513.3,206.7 L515.7,193.9 L518.1,227.0 L520.6,223.0 L523.0,199.9 L530.3,229.5 L532.7,220.3 L535.1,208.1 L537.6,215.6 L540.0,216.7 L547.3,186.4 L549.7,156.9 L552.1,170.9 L554.6,180.2 L557.0,163.3 L566.7,197.0 L569.1,215.4 L571.6,206.1 L574.0,209.2 L581.3,217.5 L583.7,222.3 L586.1,238.8 L588.6,215.8 L591.0,228.2 L598.3,173.5 L600.7,168.3 L603.1,73.4 L605.6,104.6 L608.0,60.3 L615.3,80.3 L617.7,183.8 L620.1,178.2 L622.6,85.2 L632.3,162.6 L634.7,158.7 L637.1,162.5 L639.6,139.2 L642.0,102.2 L649.3,122.0 L651.7,137.6 L654.1,179.6 L656.6,173.1 L666.3,141.7 L668.7,211.9 L671.1,197.9 L673.6,186.1 L676.0,200.4 L683.3,209.7 L685.7,196.6 L688.1,199.0 L690.6,195.1 L693.0,196.0 L700.3,174.3 L702.7,182.6 L705.1,215.6 L707.6,221.3 L710.0,168.9 L717.3,168.7 L719.7,167.6 L722.1,186.4 L724.6,132.2 L727.0,175.9 L734.3,159.3 L736.7,206.6 L739.1,193.1 L741.6,194.8 L744.0,201.4 L751.3,204.2 L753.7,224.2 L756.1,222.1 L758.6,219.9 L761.0,222.7 L768.3,243.9 L770.7,241.6 L773.1,238.9 L775.6,210.3 L778.0,212.7 L785.3,224.3 L787.7,221.8 L790.1,231.7 L792.6,224.9 L795.0,217.9 L802.3,207.0 L804.7,226.3 L807.1,224.9 L809.6,228.7 L812.0,219.5 L821.7,238.9 L824.1,227.2 L826.6,220.4 L829.0,220.4 L836.3,221.4 L838.7,215.7 L841.1,225.5 L843.6,182.5 L846.0,218.6 L853.3,231.8 L855.7,231.9 L858.1,232.4 L860.6,218.4 L863.0,204.0 L870.3,199.3 L872.7,190.3 L875.1,203.5 L877.6,198.9 L880.0,172.3 L887.3,198.5 L889.7,219.1 L892.1,231.5 L894.6,228.9 L897.0,212.7 L904.3,242.0 L906.7,249.1 L909.1,239.0 L911.6,207.0 L914.0,207.8 L921.3,188.3 L923.7,212.6 L926.1,187.5 L928.6,197.0 L931.0,182.0 L938.3,202.0 L940.7,195.1 L943.1,215.7 L945.6,211.0 L948.0,199.1 L948.0,266.0 L945.6,271.5 L943.1,273.7 L940.7,264.1 L938.3,267.3 L931.0,258.0 L928.6,264.9 L926.1,260.6 L923.7,272.2 L921.3,260.9 L914.0,270.0 L911.6,269.6 L909.1,284.5 L906.7,289.2 L904.3,285.9 L897.0,272.2 L894.6,279.8 L892.1,281.0 L889.7,275.2 L887.3,265.7 L880.0,253.5 L877.6,265.8 L875.1,268.0 L872.7,261.8 L870.3,266.0 L863.0,268.2 L860.6,274.9 L858.1,281.4 L855.7,281.2 L853.3,281.1 L846.0,275.0 L843.6,258.2 L841.1,278.2 L838.7,273.6 L836.3,276.3 L829.0,275.8 L826.6,275.8 L824.1,279.0 L821.7,284.4 L812.0,275.4 L809.6,279.7 L807.1,277.9 L804.7,278.6 L802.3,269.6 L795.0,274.7 L792.6,277.9 L790.1,281.1 L787.7,276.5 L785.3,277.6 L778.0,272.3 L775.6,271.2 L773.1,284.4 L770.7,285.7 L768.3,286.8 L761.0,276.9 L758.6,275.6 L756.1,276.6 L753.7,277.6 L751.3,268.3 L744.0,267.0 L741.6,263.9 L739.1,263.2 L736.7,269.4 L734.3,247.4 L727.0,255.1 L724.6,234.8 L722.1,260.0 L719.7,251.3 L717.3,251.8 L710.0,251.9 L707.6,276.2 L705.1,273.6 L702.7,258.2 L700.3,254.4 L693.0,264.5 L690.6,264.0 L688.1,265.9 L685.7,264.8 L683.3,270.9 L676.0,266.5 L673.6,259.9 L671.1,265.4 L668.7,271.9 L666.3,239.2 L656.6,253.8 L654.1,256.8 L651.7,237.3 L649.3,230.1 L642.0,220.9 L639.6,238.1 L637.1,248.9 L634.7,247.1 L632.3,249.0 L622.6,213.0 L620.1,256.2 L617.7,258.8 L615.3,210.7 L608.0,201.4 L605.6,222.0 L603.1,207.5 L600.7,251.6 L598.3,254.0 L591.0,279.4 L588.6,273.7 L586.1,284.4 L583.7,276.7 L581.3,274.5 L574.0,270.6 L571.6,269.2 L569.1,273.5 L566.7,264.9 L557.0,249.3 L554.6,257.1 L552.1,252.8 L549.7,246.3 L547.3,260.0 L540.0,274.1 L537.6,273.6 L535.1,270.1 L532.7,275.8 L530.3,280.1 L523.0,266.3 L520.6,277.1 L518.1,278.9 L515.7,263.5 L513.3,269.5 L506.0,265.9 L503.6,265.8 L501.1,274.1 L498.7,273.3 L496.3,268.1 L489.0,250.8 L486.6,272.4 L484.1,250.2 L481.7,272.3 L479.3,267.4 L472.0,265.4 L469.6,266.3 L467.1,269.7 L464.7,260.1 L462.3,268.9 L455.0,251.9 L452.6,248.0 L450.1,231.0 L447.7,243.1 L445.3,222.8 L435.6,248.5 L433.1,221.9 L430.7,239.1 L428.3,236.9 L421.0,243.3 L418.6,238.8 L416.1,231.7 L413.7,230.3 L411.3,237.2 L404.0,238.1 L401.6,248.4 L399.1,256.3 L396.7,246.8 L394.3,235.7 L387.0,232.8 L384.6,237.0 L382.1,234.6 L379.7,220.6 L377.3,228.3 L370.0,230.8 L367.6,246.5 L365.1,232.8 L362.7,242.4 L360.3,250.7 L353.0,246.8 L350.6,274.9 L348.1,250.5 L345.7,246.4 L343.3,238.0 L336.0,240.7 L333.6,250.9 L331.1,226.9 L328.7,240.3 L319.0,245.9 L316.6,248.8 L314.1,259.7 L311.7,261.5 L309.3,246.0 L302.0,232.5 L299.6,232.8 L297.1,244.6 L294.7,263.8 L292.3,247.3 L285.0,253.5 L282.6,271.4 L280.1,281.7 L277.7,275.7 L275.3,266.3 L268.0,267.5 L265.6,243.1 L263.1,258.8 L260.7,271.7 L251.0,274.8 L248.6,257.1 L246.1,273.8 L243.7,282.1 L241.3,270.0 L234.0,270.5 L231.6,278.1 L229.1,280.7 L226.7,281.8 L224.3,260.9 L217.0,280.2 L212.1,288.6 L209.7,286.5 L207.3,285.9 L192.7,275.7 L190.3,262.0 L183.0,241.9 L180.6,250.3 L178.1,248.6 L175.7,249.1 L173.3,248.0 L166.0,256.2 L163.6,256.1 L161.1,279.2 L158.7,267.8 L156.3,268.1 L149.0,262.5 L146.6,264.8 L144.1,249.8 L141.7,256.6 L127.1,224.1 L124.7,239.3 L122.3,212.6 L115.0,209.1 L112.6,231.4 L110.1,228.4 L107.7,240.4 L105.3,239.1 L98.0,247.6 L95.6,264.7 L93.1,268.2 L90.7,261.4 L88.3,242.4 L81.0,247.1 L78.6,263.4 L76.1,253.0 L73.7,262.7 L71.3,258.3 L64.0,258.7 Z"/>
+<path class="line-draw realized" style="--len: 6836" fill="none" stroke="var(--realized)" d="M64.0,224.1 L71.3,240.9 L73.7,216.0 L76.1,240.6 L78.6,192.0 L81.0,182.9 L88.3,243.7 L90.7,256.9 L93.1,247.2 L95.6,192.5 L98.0,164.7 L105.3,178.9 L107.7,148.1 L110.1,169.2 L112.6,101.2 L115.0,123.5 L122.3,210.9 L124.7,163.3 L127.1,235.2 L141.7,215.8 L144.1,247.1 L146.6,240.0 L149.0,253.6 L156.3,251.4 L158.7,274.6 L161.1,211.8 L163.6,216.6 L166.0,197.9 L173.3,207.6 L175.7,211.2 L178.1,215.5 L180.6,190.9 L183.0,246.5 L190.3,275.0 L192.7,277.2 L207.3,275.9 L209.7,280.5 L212.1,259.4 L217.0,208.0 L224.3,273.8 L226.7,271.3 L229.1,265.0 L231.6,244.8 L234.0,237.9 L241.3,273.3 L243.7,251.7 L246.1,204.6 L248.6,259.4 L251.0,248.9 L260.7,213.0 L263.1,169.2 L265.6,246.7 L268.0,244.2 L275.3,268.4 L277.7,279.2 L280.1,241.9 L282.6,190.7 L285.0,181.3 L292.3,240.4 L294.7,186.7 L297.1,155.3 L299.6,161.4 L302.0,206.7 L309.3,250.1 L311.7,242.5 L314.1,204.8 L316.6,191.0 L319.0,177.0 L328.7,143.3 L331.1,225.8 L333.6,196.4 L336.0,188.2 L343.3,210.9 L345.7,215.9 L348.1,276.2 L350.6,200.0 L353.0,210.4 L360.3,186.6 L362.7,161.0 L365.1,212.5 L367.6,165.3 L370.0,162.6 L377.3,140.7 L379.7,186.5 L382.1,195.6 L384.6,181.5 L387.0,188.9 L394.3,215.5 L396.7,238.2 L399.1,213.3 L401.6,178.3 L404.0,177.8 L411.3,161.2 L413.7,173.6 L416.1,198.6 L418.6,209.7 L421.0,189.1 L428.3,192.7 L430.7,138.3 L433.1,224.2 L435.6,147.5 L445.3,212.6 L447.7,175.9 L450.1,220.1 L452.6,229.6 L455.0,264.1 L462.3,239.2 L464.7,256.4 L467.1,243.5 L469.6,239.3 L472.0,247.2 L479.3,258.4 L481.7,197.1 L484.1,262.9 L486.6,201.4 L489.0,253.8 L496.3,266.2 L498.7,262.0 L501.1,239.9 L503.6,234.2 L506.0,244.5 L513.3,229.7 L515.7,272.0 L518.1,264.8 L520.6,231.1 L523.0,269.9 L530.3,254.4 L532.7,240.3 L535.1,252.6 L537.6,251.5 L540.0,212.3 L547.3,175.7 L549.7,206.5 L552.1,224.2 L554.6,202.2 L557.0,248.5 L566.7,264.0 L569.1,248.5 L571.6,250.3 L574.0,254.8 L581.3,259.9 L583.7,279.0 L586.1,248.7 L588.6,264.2 L591.0,190.0 L598.3,194.4 L600.7,60.5 L603.1,141.5 L605.6,84.8 L608.0,130.4 L615.3,263.6 L617.7,250.6 L620.1,119.4 L622.6,224.4 L632.3,210.0 L634.7,218.6 L637.1,189.4 L639.6,126.2 L642.0,169.8 L649.3,195.9 L651.7,248.7 L654.1,238.8 L656.6,187.8 L666.3,270.9 L668.7,250.7 L671.1,236.7 L673.6,253.4 L676.0,256.1 L683.3,240.0 L685.7,243.2 L688.1,235.5 L690.6,237.3 L693.0,210.7 L700.3,225.6 L702.7,265.7 L705.1,269.9 L707.6,200.6 L710.0,202.2 L717.3,203.4 L719.7,232.5 L722.1,157.0 L724.6,225.4 L727.0,201.3 L734.3,262.0 L736.7,244.2 L739.1,237.2 L741.6,244.6 L744.0,242.9 L751.3,268.8 L753.7,264.6 L756.1,259.1 L758.6,260.9 L761.0,282.8 L768.3,279.1 L770.7,274.3 L773.1,236.7 L775.6,243.9 L778.0,262.6 L785.3,260.2 L787.7,272.3 L790.1,260.1 L792.6,248.9 L795.0,234.0 L802.3,262.4 L804.7,260.0 L807.1,264.7 L809.6,251.2 L812.0,273.2 L821.7,257.4 L824.1,248.5 L826.6,250.7 L829.0,252.2 L836.3,246.8 L838.7,260.8 L841.1,200.6 L843.6,258.2 L846.0,273.6 L853.3,271.7 L855.7,271.4 L858.1,244.2 L860.6,226.9 L863.0,226.9 L870.3,219.8 L872.7,243.0 L875.1,236.9 L877.6,199.0 L880.0,240.0 L887.3,264.1 L889.7,276.6 L892.1,271.5 L894.6,242.8 L897.0,278.5 L904.3,285.0 L906.7,273.0 L909.1,231.7 L911.6,235.0 L914.0,212.4 L921.3,253.3 L923.7,221.5 L926.1,236.2 L928.6,216.0 L931.0,243.0 L938.3,234.7 L940.7,259.4 L943.1,251.3 L945.6,231.7 L948.0,206.0"/>
+<path class="line-draw forecast" style="--len: 3924" fill="none" stroke="var(--cobalt)" d="M64.0,217.7 L71.3,217.0 L73.7,224.3 L76.1,208.4 L78.6,225.3 L81.0,198.8 L88.3,191.1 L90.7,222.1 L93.1,233.1 L95.6,227.5 L98.0,199.7 L105.3,185.8 L107.7,188.0 L110.1,168.4 L112.6,173.2 L115.0,136.9 L122.3,142.7 L124.7,186.2 L127.1,161.4 L141.7,214.3 L144.1,203.2 L146.6,227.6 L149.0,223.8 L156.3,233.0 L158.7,232.6 L161.1,251.1 L163.6,213.4 L166.0,213.6 L173.3,200.3 L175.7,202.1 L178.1,201.2 L180.6,204.0 L183.0,190.3 L190.3,223.1 L192.7,245.3 L207.3,262.0 L209.7,263.0 L212.1,266.4 L217.0,252.7 L224.3,221.3 L226.7,255.3 L229.1,253.6 L231.6,249.2 L234.0,237.0 L241.3,236.2 L243.7,255.7 L246.1,242.4 L248.6,215.1 L251.0,243.9 L260.7,238.9 L263.1,217.8 L265.6,192.4 L268.0,232.0 L275.3,230.0 L277.7,245.4 L280.1,255.1 L282.6,238.3 L285.0,209.3 L292.3,199.2 L294.7,226.1 L297.1,194.8 L299.6,175.5 L302.0,175.1 L309.3,197.1 L311.7,222.2 L314.1,219.3 L316.6,201.6 L319.0,196.9 L328.7,187.8 L331.1,166.0 L333.6,205.0 L336.0,188.5 L343.3,184.1 L345.7,197.7 L348.1,204.4 L350.6,244.0 L353.0,198.3 L360.3,204.6 L362.7,191.2 L365.1,175.5 L367.6,197.9 L370.0,172.4 L377.3,168.3 L379.7,155.6 L382.1,178.4 L384.6,182.3 L387.0,175.6 L394.3,180.3 L396.7,198.3 L399.1,213.9 L401.6,201.0 L404.0,184.1 L411.3,182.7 L413.7,171.4 L416.1,173.7 L418.6,185.4 L421.0,192.7 L428.3,182.2 L430.7,185.8 L433.1,157.9 L435.6,201.2 L445.3,159.3 L447.7,192.4 L450.1,172.7 L452.6,200.4 L455.0,206.6 L462.3,234.4 L464.7,220.0 L467.1,235.7 L469.6,230.0 L472.0,228.6 L479.3,232.0 L481.7,239.8 L484.1,203.9 L486.6,240.1 L489.0,204.9 L496.3,233.0 L498.7,241.5 L501.1,242.7 L503.6,229.3 L506.0,229.5 L513.3,235.2 L515.7,225.6 L518.1,250.6 L520.6,247.6 L523.0,230.1 L530.3,252.5 L532.7,245.5 L535.1,236.3 L537.6,242.0 L540.0,242.8 L547.3,219.9 L549.7,197.5 L552.1,208.2 L554.6,215.2 L557.0,202.4 L566.7,227.9 L569.1,241.8 L571.6,234.8 L574.0,237.1 L581.3,243.4 L583.7,247.0 L586.1,259.5 L588.6,242.1 L591.0,251.5 L598.3,210.1 L600.7,206.1 L603.1,134.4 L605.6,157.9 L608.0,124.5 L615.3,139.6 L617.7,217.9 L620.1,213.6 L622.6,143.3 L632.3,201.9 L634.7,198.9 L637.1,201.8 L639.6,184.1 L642.0,156.2 L649.3,171.2 L651.7,182.9 L654.1,214.7 L656.6,209.8 L666.3,186.0 L668.7,239.2 L671.1,228.6 L673.6,219.7 L676.0,230.4 L683.3,237.5 L685.7,227.6 L688.1,229.4 L690.6,226.4 L693.0,227.1 L700.3,210.7 L702.7,217.0 L705.1,241.9 L707.6,246.3 L710.0,206.6 L717.3,206.5 L719.7,205.6 L722.1,219.8 L724.6,178.8 L727.0,211.9 L734.3,199.4 L736.7,235.2 L739.1,225.0 L741.6,226.2 L744.0,231.2 L751.3,233.3 L753.7,248.5 L756.1,246.9 L758.6,245.2 L761.0,247.4 L768.3,263.4 L770.7,261.6 L773.1,259.6 L775.6,238.0 L778.0,239.8 L785.3,248.5 L787.7,246.7 L790.1,254.2 L792.6,249.0 L795.0,243.7 L802.3,235.4 L804.7,250.1 L807.1,249.0 L809.6,251.9 L812.0,244.9 L821.7,259.6 L824.1,250.7 L826.6,245.6 L829.0,245.6 L836.3,246.3 L838.7,242.0 L841.1,249.5 L843.6,216.9 L846.0,244.2 L853.3,254.2 L855.7,254.3 L858.1,254.7 L860.6,244.1 L863.0,233.2 L870.3,229.6 L872.7,222.8 L875.1,232.8 L877.6,229.3 L880.0,209.2 L887.3,229.0 L889.7,244.6 L892.1,254.0 L894.6,252.0 L897.0,239.7 L904.3,261.9 L906.7,267.3 L909.1,259.7 L911.6,235.5 L914.0,236.1 L921.3,221.3 L923.7,239.7 L926.1,220.7 L928.6,227.9 L931.0,216.5 L938.3,231.6 L940.7,226.5 L943.1,242.1 L945.6,238.5 L948.0,229.5"/>
+</svg>
+      <ul class="legend">
+        <li><span class="key key-forecast" aria-hidden="true"></span><span lang="th">volatility ที่พยากรณ์ (HAR-RV)</span><span lang="en">Forecast volatility (HAR-RV)</span></li>
+        <li><span class="key key-realized" aria-hidden="true"></span><span lang="th">volatility ที่เกิดจริง</span><span lang="en">Realized volatility</span></li>
+        <li><span class="key key-band" aria-hidden="true"></span><span lang="th">ช่วง 80% จาก error ในช่วง development</span><span lang="en">80% range from development-period errors</span></li>
+      </ul>
+      <figcaption>
+        <span lang="th">S&amp;P 500 (SPY) volatility รายวันแบบ annualized ช่วง test ตั้งแต่ 2025-10-31 ถึง 2026-10-30 (247 วัน) ซึ่งโมเดลไม่เคยเห็นตอนสร้าง ค่าจริงอยู่ในแถบ 76% ของวัน ต่ำกว่า 80% ที่ตั้งไว้เล็กน้อย</span>
+        <span lang="en">Annualized daily volatility of the S&amp;P 500 (SPY) over the test period, 2025-10-31 to 2026-10-30 (247 days), which the model never saw while it was built. Realized volatility fell inside the band on 76% of days, slightly below the 80% target.</span>
+      </figcaption>
+    </figure>
+
+    <p class="result-line" lang="th">คำถามคือ ถ้าเพิ่มข้อมูล volatility ของสินทรัพย์อื่นเข้าไป การพยากรณ์จะดีขึ้นไหม ผลคือไม่ดีขึ้น ค่า QLIKE แย่ลงทั้ง 10 จาก 10 การเปรียบเทียบ (SPY +5.6%, p 0.024)</p>
+    <p class="result-line" lang="en">The question was whether adding other assets' volatility improves this forecast. It does not: QLIKE loss got worse in all 10 of 10 comparisons (SPY +5.6%, p 0.024).</p>
+  </section>
+
+  <section id="featured" class="wide" aria-labelledby="featured-h">
+    <h2 id="featured-h"><span lang="th">งานเด่น</span><span lang="en">Selected work</span></h2>
+
+    <article class="project-row">
+      <div class="side-q">
+        <h3><span lang="th">Cross-Asset Volatility</span><span lang="en">Cross-Asset Volatility</span></h3>
+        <p class="q" lang="th">volatility ของสินทรัพย์อื่นช่วยพยากรณ์ volatility วันถัดไปของ Bitcoin, SPY, ทอง, น้ำมัน และดอลลาร์ ได้ดีกว่าโมเดล HAR-RV ที่ใช้แค่ข้อมูลของตัวเองไหม</p>
+        <p class="q" lang="en">Does other assets' volatility help forecast next-day volatility of Bitcoin, SPY, gold, oil and the US dollar beyond an own-asset HAR-RV model?</p>
+      </div>
+      <div class="side-a">
+        <p class="a" lang="th">ไม่ช่วย เมื่อทดสอบครั้งเดียวกับ 12 เดือนสุดท้ายหลังล็อกทุกค่าแล้ว โมเดลที่เพิ่มข้อมูลข้ามสินทรัพย์มี loss สูงกว่าทั้ง 10 คู่</p>
+        <p class="a" lang="en">No. On the final 12 months, run once after every setting was frozen, the cross-asset models had higher loss in all 10 pairs.</p>
+        <span class="figure-num" lang="th">SPY +5.6% QLIKE, p 0.024</span>
+        <span class="figure-num" lang="en">SPY +5.6% QLIKE, p 0.024</span>
+        <p><a class="more" href="projects/volatility.html"><span lang="th">อ่าน case study</span><span lang="en">Read the case study</span></a></p>
+      </div>
+    </article>
+
+    <article class="project-row">
+      <div class="side-q">
+        <h3><span lang="th">Macro News &amp; Volatility</span><span lang="en">Macro News &amp; Volatility</span></h3>
+        <p class="q" lang="th">ข่าวเศรษฐกิจมหภาคที่ไม่ได้นัดเวลาไว้ (หมวดข่าวและโทนข่าว) ช่วยพยากรณ์ volatility รายชั่วโมงได้มากกว่าข้อมูลราคาและ volume ไหม</p>
+        <p class="q" lang="en">Do unscheduled macro news events (category and tone) add information about next-period volatility beyond price and volume?</p>
+      </div>
+      <div class="side-a">
+        <p class="a" lang="th">แทบไม่ช่วย มีนัยสำคัญแค่ 2 จาก 15 การทดสอบ ทั้งคู่เป็น BTCUSDT และผลนี้ไม่เกิดซ้ำในข้อมูลปี 2024</p>
+        <p class="a" lang="en">Largely no. Only 2 of 15 tests were significant, both for BTCUSDT, and the gain did not appear in the 2024 validation year.</p>
+        <span class="figure-num" lang="th">BTCUSDT h=4: −1.66% QLIKE, p_holm 0.0074</span>
+        <span class="figure-num" lang="en">BTCUSDT h=4: −1.66% QLIKE, p_holm 0.0074</span>
+        <p><a class="more" href="projects/macro-news.html"><span lang="th">อ่าน case study</span><span lang="en">Read the case study</span></a></p>
+      </div>
+    </article>
+
+    <article class="project-row">
+      <div class="side-q">
+        <h3><span lang="th">Eco-project: ทองคำ, S&amp;P 500, Bitcoin</span><span lang="en">Eco-project: gold, S&amp;P 500, Bitcoin</span></h3>
+        <p class="q" lang="th">พยากรณ์ราคาทอง, S&amp;P 500 และ Bitcoin เป็นช่วง (1 ถึง 12 เดือน) ได้ดีกว่า random walk ไหม</p>
+        <p class="q" lang="en">Can range forecasts for gold, the S&amp;P 500 and Bitcoin (1 to 12 months) beat a random walk?</p>
+      </div>
+      <div class="side-a">
+        <p class="a" lang="th">ได้เฉพาะ S&amp;P 500 และได้เปรียบเรื่องความกว้างของช่วงตามจังหวะ volatility ไม่ใช่ทิศทาง (hit rate ที่ 12 เดือน 0.86 เท่ากับสัดส่วนที่ตลาดขึ้นจริง 0.86)</p>
+        <p class="a" lang="en">Only for the S&amp;P 500, and the edge is in volatility timing, not direction (12-month hit rate 0.86 equals the base rate of 0.86).</p>
+        <span class="figure-num" lang="th">S&amp;P 500: qualified, ทองและ BTC: none</span>
+        <span class="figure-num" lang="en">S&amp;P 500: qualified, gold and BTC: none</span>
+        <p><a class="more" href="projects/eco-project.html"><span lang="th">อ่าน case study</span><span lang="en">Read the case study</span></a></p>
+      </div>
+    </article>
+  </section>
+
+  <section id="other" class="wrap" aria-labelledby="other-h">
+    <h2 id="other-h"><span lang="th">งานอื่น</span><span lang="en">Other work</span></h2>
+    <ul class="other-list">
+      <li>
+        <span class="name"><span lang="th">Predictive Maintenance (AI4I)</span><span lang="en">Predictive Maintenance (AI4I)</span></span>
+        <span class="tools">scikit-learn, UCI AI4I 2020</span>
+        <span lang="th">จำแนกเครื่องจักรที่จะเสียจากข้อมูลสังเคราะห์ UCI AI4I 2020 ได้ recall 0.78 ต่ำกว่าเป้า 0.80 และรายงานตามนั้นโดยไม่จูนด้วย test set (precision 0.59 ที่ threshold 0.19)</span>
+        <span lang="en">Machine-failure classifier on the synthetic UCI AI4I 2020 data. Recall was 0.78, below the 0.80 target, and is reported as is without tuning on the test set (precision 0.59 at threshold 0.19).</span>
+        <a class="code" href="https://github.com/Nantapatpluem/portfolio-projects/tree/main/predictive-maintenance-ai4i"><span lang="th">ดูโค้ดบน GitHub</span><span lang="en">Code on GitHub</span></a>
+      </li>
+      <li>
+        <span class="name"><span lang="th">Global Air Quality (AQI)</span><span lang="en">Global Air Quality (AQI)</span></span>
+        <span class="tools">pandas, Plotly, SciPy</span>
+        <span lang="th">วิเคราะห์ AQI ของหลายเมือง แล้วพบว่า dataset น่าจะเป็นข้อมูลสังเคราะห์: AQI แยกไม่ออกจากการสุ่มแบบ uniform (KS test p ≈ 0.88) และไม่สัมพันธ์กับสารมลพิษของตัวเอง (|r| &lt; 0.04)</span>
+        <span lang="en">AQI analysis across cities that found the dataset is likely synthetic: AQI is indistinguishable from a uniform random draw (KS test p ≈ 0.88) and unrelated to its own pollutants (|r| &lt; 0.04).</span>
+        <a class="code" href="https://github.com/Nantapatpluem/portfolio-projects/tree/main/global-air-quality"><span lang="th">ดูโค้ดบน GitHub</span><span lang="en">Code on GitHub</span></a>
+      </li>
+      <li>
+        <span class="name"><span lang="th">Stock Price Prediction</span><span lang="en">Stock Price Prediction</span></span>
+        <span class="tools">statsmodels ARIMA/SARIMA, 8 tickers</span>
+        <span lang="th">การเลือกโมเดลด้วย AIC ได้ ARIMA(0,1,0) ซึ่งก็คือ random walk ใน 7 จาก 8 tickers สำหรับ AAPL RMSE หนึ่งวันข้างหน้า $1.57 เท่ากับโมเดล naive และโมเดลหนึ่งวันที่ดีที่สุดคือ random walk ที่มี drift ใน 6 จาก 8 tickers</span>
+        <span lang="en">AIC selection picked ARIMA(0,1,0), which is a random walk, for 7 of 8 tickers. For AAPL its one-day-ahead RMSE was $1.57, the same as the naive model, and the best one-day model was a random walk with drift for 6 of 8 tickers.</span>
+        <a class="code" href="https://github.com/Nantapatpluem/portfolio-projects/tree/main/stock-price-prediction"><span lang="th">ดูโค้ดบน GitHub</span><span lang="en">Code on GitHub</span></a>
+      </li>
+    </ul>
+  </section>
+
+  <section id="about" class="wrap" aria-labelledby="about-h">
+    <h2 id="about-h"><span lang="th">เกี่ยวกับผม</span><span lang="en">About</span></h2>
+    <p lang="th">ผมทำงานวิเคราะห์ข้อมูลและวิจัยเชิงปริมาณ ส่วนใหญ่เป็นการพยากรณ์ความเสี่ยงและ volatility ของสินทรัพย์การเงิน ผมล็อกวิธีทดสอบไว้ก่อนดูผล ทดสอบกับข้อมูลที่โมเดลไม่เคยเห็น และเขียนทุกการตัดสินใจไว้ให้ตรวจย้อนได้</p>
+    <p lang="en">I work on data analysis and quantitative research, mostly forecasting risk and volatility in financial assets. I fix the test before I look at results, test on data the model has never seen, and write down every decision so it can be checked later.</p>
+    <p lang="th">กำลังเรียนวิศวกรรมไฟฟ้า คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย (2024-2028) และกำลังหาที่ฝึกงานด้าน data หรือ quant ในประเทศไทย</p>
+    <p lang="en">I study Electrical Engineering at Chulalongkorn University (2024-2028) and am looking for a data or quant internship in Thailand.</p>
+    <ul class="contact">
+      <li><a data-site="email" href="mailto:pluemteo@gmail.com">pluemteo@gmail.com</a></li>
+      <li hidden><a data-site="github" data-keep-text>GitHub</a></li>
+      <li hidden><a data-site="linkedin" data-keep-text>LinkedIn</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer wide">
+  <p lang="th">ไม่ใช่คำแนะนำการลงทุน</p>
+  <p lang="en">Not investment advice.</p>
+</footer>
+</body>
+</html>

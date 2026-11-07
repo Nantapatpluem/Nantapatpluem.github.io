@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Case study: does other assets' volatility improve next-day volatility forecasts beyond HAR-RV? Tested once on a frozen 12-month out-of-sample period.">
+<title data-title-th="Cross-Asset Volatility: case study" data-title-en="Cross-Asset Volatility: case study">Cross-Asset Volatility: case study</title>
+<script>(function(){try{var s=localStorage.getItem("site-lang"),t=localStorage.getItem("site-theme")}catch(e){}var d=document.documentElement,l=(s==="th"||s==="en")?s:((navigator.language||"").toLowerCase().indexOf("th")===0?"th":"en");d.setAttribute("data-lang",l);d.setAttribute("lang",l);if(t==="light"||t==="dark")d.setAttribute("data-theme",t)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/site-config.js" defer></script>
+<script src="../js/main.js" defer></script>
+</head>
+<body>
+<header class="site-header wide">
+  <a class="home" href="../index.html"><span lang="th" data-site="nameTh">นันทพัทธ์ ใจการุณ</span><span lang="en" data-site="nameEn">Nantapat Jaikaroon</span></a>
+  <div class="controls">
+    <button type="button" class="lang-toggle"><span data-l="th" class="off">TH</span> | <span data-l="en" class="on">EN</span><span class="sr-only" lang="th"> (เปลี่ยนภาษา)</span><span class="sr-only" lang="en"> (change language)</span></button>
+    <button type="button" class="theme-toggle" data-label-th="ธีมมืด" data-label-en="Dark theme" aria-label="Dark theme" aria-pressed="false">◐</button>
+  </div>
+</header>
+
+<main class="case-body">
+  <header class="case-head wrap">
+    <p><a href="../index.html#featured"><span lang="th">กลับหน้าแรก</span><span lang="en">Back to home</span></a></p>
+    <h1><span lang="th">Cross-Asset Volatility Forecasting</span><span lang="en">Cross-Asset Volatility Forecasting</span></h1>
+    <p class="lede" lang="th">volatility ของสินทรัพย์อื่นช่วยพยากรณ์ volatility วันถัดไปได้ดีกว่าโมเดลที่ใช้ข้อมูลของตัวเองไหม คำตอบคือไม่ช่วย และในช่วง test โมเดลที่เพิ่มข้อมูลข้ามสินทรัพย์แย่กว่าทุกคู่</p>
+    <p class="lede" lang="en">Does other assets' volatility improve next-day volatility forecasts over an own-asset model? No. On the final test, every cross-asset model did worse than its own-asset twin.</p>
+    <dl class="case-facts">
+      <dt><span lang="th">บทบาท</span><span lang="en">Role</span></dt>
+      <dd><span lang="th">โปรเจกต์ส่วนตัว ทำทุกขั้นตั้งแต่ดึงข้อมูลจนถึง API และ dashboard</span><span lang="en">Personal project, every stage from ingestion to API and dashboard</span></dd>
+      <dt><span lang="th">ข้อมูล</span><span lang="en">Data</span></dt>
+      <dd><span lang="th">BTCUSDT, SPY, GLD, USO, UUP ราย 5-30 นาที, 2020-07-01 ถึง 2026-10-30 (1,592 วันทำการ)</span><span lang="en">BTCUSDT, SPY, GLD, USO, UUP at 5-30 minute bars, 2020-07-01 to 2026-10-30 (1,592 sessions)</span></dd>
+      <dt><span lang="th">เครื่องมือ</span><span lang="en">Tools</span></dt>
+      <dd>Python, pandas, statsmodels, arch, LightGBM, FastAPI, Streamlit, pytest</dd>
+      <dt><span lang="th">ผล</span><span lang="en">Result</span></dt>
+      <dd><span lang="th">ไม่ช่วย: loss สูงขึ้น 10 จาก 10 คู่ แย่ลงอย่างมีนัยสำคัญใน SPY และ USO</span><span lang="en">No: higher loss in 10 of 10 pairs, significantly worse for SPY and USO</span></dd>
+    </dl>
+  </header>
+
+  <section class="wrap">
+    <h2><span lang="th">โจทย์</span><span lang="en">Problem</span></h2>
+    <p lang="th">นักลงทุนมักเชื่อว่าตลาดเชื่อมกัน เช่น ถ้าดอลลาร์หรือน้ำมันผันผวน หุ้นก็จะผันผวนตาม ผมอยากรู้ว่าความเชื่อนี้ช่วยพยากรณ์ volatility วันถัดไปได้จริงไหม เมื่อเทียบกับ HAR-RV ซึ่งเป็น baseline ที่แข็งแรงและใช้แค่ volatility ในอดีตของสินทรัพย์ตัวเอง</p>
+    <p lang="en">Markets are often assumed to be linked: if the dollar or oil turns volatile, equities follow. I wanted to know whether that idea actually improves next-day volatility forecasts against HAR-RV, a strong baseline that uses only the asset's own past volatility.</p>
+    <p lang="th">ผมตั้งไว้ก่อนเริ่มว่าผล null คือผลที่รายงานได้ และห้ามจูนโมเดลเพื่อให้ได้คำตอบที่อยากได้</p>
+    <p lang="en">Before any model ran, a null result was declared acceptable, and tuning toward a preferred answer was ruled out.</p>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">วิธีทำ</span><span lang="en">Process</span></h2>
+    <h3><span lang="th">ข้อมูลและเป้าหมาย</span><span lang="en">Data and target</span></h3>
+    <ul lang="th">
+      <li>เป้าหมายคือ realized variance ของวันทำการถัดไป: ผลรวมของ log return ยกกำลังสองระหว่างวัน</li>
+      <li>หุ้นและ ETF ใช้เฉพาะช่วงตลาดเปิด 09:30-16:00 ET ไม่รวม overnight ส่วน BTC ใช้ 24 ชั่วโมงที่จบตอน 16:00 ET</li>
+      <li>UUP ซื้อขายบางมาก 49.63% ของ return ราย 5 นาทีเป็นศูนย์ จึงใช้ช่วง 30 นาที ตามกฎ volatility signature ที่ล็อกไว้ก่อนดูผลพยากรณ์ (D-027)</li>
+      <li>วันที่มีข้อมูลไม่ถึง 80% ของที่ควรมีจะถูก flag และไม่ใช้เป็นเป้าหมาย ไม่ forward-fill ราคา</li>
+    </ul>
+    <ul lang="en">
+      <li>The target is next-session realized variance: the sum of squared intraday log returns.</li>
+      <li>ETFs use the regular session only, 09:30-16:00 ET, with no overnight return. BTC uses the 24 hours ending 16:00 ET.</li>
+      <li>UUP is thin: 49.63% of its 5-minute returns are exactly zero, so it uses 30-minute bars, chosen by a volatility-signature rule fixed before looking at forecasts (D-027).</li>
+      <li>Days with fewer than 80% of the expected bars are flagged and never used as targets. Prices are never forward-filled.</li>
+    </ul>
+
+    <figure class="case-figure">
+      <a href="../assets/img/vol-rv-signature.png" class="img-link"><img src="../assets/img/vol-rv-signature.png" width="1560" height="336" loading="lazy" alt="Volatility signature plots for five assets" data-alt-th="กราฟ volatility signature ของ 5 สินทรัพย์ UUP มีค่าเกินแถบ ±10% มากที่ช่วง 5 นาที" data-alt-en="Volatility signature plots for five assets; UUP rises far above the ±10% band at 5 minutes"></a>
+      <figcaption>
+        <span lang="th">volatility signature ในช่วง development: ค่า RV ของ UUP ที่ช่วง 5 นาทีสูงกว่าค่าอ้างอิงประมาณ 37% จึงเลือกใช้ 30 นาที</span>
+        <span lang="en">Volatility signature over the development period: UUP's RV at 5 minutes is about 37% above the reference, so 30 minutes was used.</span>
+      </figcaption>
+    </figure>
+
+    <h3><span lang="th">โมเดลและการทดสอบ</span><span lang="en">Models and testing</span></h3>
+    <ul lang="th">
+      <li>7 โมเดลต่อสินทรัพย์: naive, EWMA, GARCH(1,1), HAR-RV, HAR-X (HAR-RV + ข้อมูลข้ามสินทรัพย์), LightGBM เฉพาะข้อมูลตัวเอง และ LightGBM ที่เพิ่มข้อมูลข้ามสินทรัพย์</li>
+      <li>คำถามวิจัยตอบด้วย 2 คู่: HAR-X เทียบ HAR-RV และ LightGBM CROSS เทียบ OWN</li>
+      <li>walk-forward แบบ expanding window refit ทุกเดือน LightGBM จูนเฉพาะภายในข้อมูล train ของแต่ละ fold</li>
+      <li>วัดด้วย QLIKE และทดสอบความต่างด้วย Diebold-Mariano (HAC, HLN)</li>
+      <li>ล็อกรายชื่อโมเดลและทุกค่าในวันที่ 2026-11-03 พร้อมบันทึก hash ของไฟล์ (D-047) แล้วจึงรัน 12 เดือนสุดท้ายครั้งเดียว</li>
+      <li>มี test กัน look-ahead: เปลี่ยนข้อมูลหลังวัน t เป็นค่าสุ่มแล้ว feature ของวัน t ต้องไม่เปลี่ยน</li>
+    </ul>
+    <ul lang="en">
+      <li>Seven models per asset: naive, EWMA, GARCH(1,1), HAR-RV, HAR-X (HAR-RV plus cross-asset terms), LightGBM on own features and LightGBM with cross-asset features.</li>
+      <li>The research question is answered by two pairs: HAR-X vs HAR-RV and LightGBM CROSS vs OWN.</li>
+      <li>Walk-forward with an expanding window and a monthly refit. LightGBM is tuned only inside each fold's training rows.</li>
+      <li>QLIKE is the metric, and differences are tested with Diebold-Mariano (HAC, HLN correction).</li>
+      <li>The model list and every setting were frozen on 2026-11-03 with file hashes recorded (D-047). The final 12 months were then run once.</li>
+      <li>Leakage tests: scrambling all data after day t must leave the features at t unchanged.</li>
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">สิ่งที่ส่งมอบ</span><span lang="en">Solution</span></h2>
+    <p lang="th">pipeline ดึงข้อมูลจาก Binance และ Alpaca (feed SIP) พร้อมตรวจ checksum, การเปรียบเทียบ 7 โมเดลพร้อมสถิติทดสอบ, FastAPI ที่ให้ค่าพยากรณ์ HAR-RV และ dashboard Streamlit ที่แสดงข้อมูล, ผลพยากรณ์เทียบค่าจริง, ผล DM test และ error แยกตาม regime ทุกการตัดสินใจที่ไม่ชัดเจนบันทึกไว้ใน DECISIONS.md (D-001 ถึง D-051)</p>
+    <p lang="en">A pipeline that pulls Binance and Alpaca (SIP feed) data with checksum checks, a seven-model comparison with statistical tests, a FastAPI service that serves the HAR-RV forecast, and a Streamlit dashboard with data status, forecast vs realized, DM results and errors by regime. Every non-obvious decision is logged in DECISIONS.md (D-001 to D-051).</p>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">ผลลัพธ์</span><span lang="en">Results</span></h2>
+    <p lang="th">ช่วง test 12 เดือนสุดท้าย (247-249 วันต่อสินทรัพย์) ค่าบวกหมายถึงโมเดลที่เพิ่มข้อมูลข้ามสินทรัพย์มี QLIKE สูงกว่า คือแย่กว่า</p>
+    <p lang="en">Final 12-month test (247-249 days per asset). Positive means the cross-asset model has higher QLIKE, so it is worse.</p>
+
+    <div class="table-scroll" lang="th" tabindex="0" role="region" data-label-th="ตารางผลทดสอบโมเดลข้ามสินทรัพย์" data-label-en="Cross-asset model test results" aria-label="Cross-asset model test results">
+      <table class="result-table">
+        <thead><tr><th>สินทรัพย์</th><th class="num">HAR-X เทียบ HAR-RV</th><th class="num">DM p</th><th class="num">LightGBM CROSS เทียบ OWN</th><th class="num">DM p</th></tr></thead>
+        <tbody>
+          <tr><td>BTCUSDT</td><td class="num">+3.9%</td><td class="num">0.128</td><td class="num">+1.0%</td><td class="num">0.643</td></tr>
+          <tr><td>SPY</td><td class="num sig">+5.6%</td><td class="num sig">0.024</td><td class="num">+5.6%</td><td class="num">0.054</td></tr>
+          <tr><td>GLD</td><td class="num">+8.1%</td><td class="num">0.196</td><td class="num">+1.6%</td><td class="num">0.689</td></tr>
+          <tr><td>USO</td><td class="num sig">+6.6%</td><td class="num sig">0.033</td><td class="num">+11.5%</td><td class="num">0.075</td></tr>
+          <tr><td>UUP</td><td class="num">+2.2%</td><td class="num">0.641</td><td class="num">+3.5%</td><td class="num">0.125</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-scroll" lang="en" tabindex="0" role="region" data-label-th="ตารางผลทดสอบโมเดลข้ามสินทรัพย์" data-label-en="Cross-asset model test results" aria-label="Cross-asset model test results">
+      <table class="result-table">
+        <thead><tr><th>Asset</th><th class="num">HAR-X vs HAR-RV</th><th class="num">DM p</th><th class="num">LightGBM CROSS vs OWN</th><th class="num">DM p</th></tr></thead>
+        <tbody>
+          <tr><td>BTCUSDT</td><td class="num">+3.9%</td><td class="num">0.128</td><td class="num">+1.0%</td><td class="num">0.643</td></tr>
+          <tr><td>SPY</td><td class="num sig">+5.6%</td><td class="num sig">0.024</td><td class="num">+5.6%</td><td class="num">0.054</td></tr>
+          <tr><td>GLD</td><td class="num">+8.1%</td><td class="num">0.196</td><td class="num">+1.6%</td><td class="num">0.689</td></tr>
+          <tr><td>USO</td><td class="num sig">+6.6%</td><td class="num sig">0.033</td><td class="num">+11.5%</td><td class="num">0.075</td></tr>
+          <tr><td>UUP</td><td class="num">+2.2%</td><td class="num">0.641</td><td class="num">+3.5%</td><td class="num">0.125</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="source"><span lang="th">ตัวหนา = p &lt; 0.05 ที่มา: reports/test_ablation.csv</span><span lang="en">Bold = p &lt; 0.05. Source: reports/test_ablation.csv</span></p>
+
+    <ul lang="th">
+      <li>ในช่วง development ไม่มีโมเดลข้ามสินทรัพย์ตัวไหนดีกว่าคู่ของมันอย่างมีนัยสำคัญ</li>
+      <li>permutation importance ของ LightGBM ให้ภาพเดียวกัน: HAR ของสินทรัพย์ตัวเองสำคัญที่สุด และไม่มีคอลัมน์ข้ามสินทรัพย์ติด 3 อันดับแรกในสินทรัพย์ไหนเลย</li>
+      <li>naive, EWMA และ GARCH มี QLIKE สูงกว่า HAR-RV ทุกสินทรัพย์ทั้งสองช่วง HAR-RV จึงเป็นโมเดลที่เสถียรที่สุด</li>
+    </ul>
+    <ul lang="en">
+      <li>On the development period, no cross-asset model was significantly better than its own-asset twin.</li>
+      <li>LightGBM permutation importance agrees: the asset's own HAR terms dominate, and no cross-asset column is in the top three for any asset.</li>
+      <li>Naive, EWMA and GARCH had higher QLIKE than HAR-RV on every asset in both periods, so HAR-RV was the most robust model.</li>
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">สิ่งที่ได้เรียนรู้</span><span lang="en">Learnings</span></h2>
+    <ul lang="th">
+      <li><strong>LightGBM พังเมื่อ volatility ออกนอกช่วงที่เคยเห็น</strong> ปีที่ test ทองและน้ำมันผันผวนกว่าช่วง train มาก LightGBM บน GLD จาก −3.6% (development) กลายเป็น +24.7% (test) เทียบ HAR-RV เพราะโมเดลต้นไม้พยากรณ์สูงกว่าค่าที่เคยเห็นตอน train ไม่ได้ คำอธิบายนี้มาจากการวิเคราะห์หลังเห็นผล test (D-048) ไม่ได้ทดสอบไว้ล่วงหน้า</li>
+      <li><strong>ข้อมูลข้ามสินทรัพย์เพิ่ม noise มากกว่าข้อมูล</strong> HAR-X เพิ่ม 12 คอลัมน์บนข้อมูลราว 1,000-1,500 แถว ความยืดหยุ่นที่เพิ่มมาแลกกับ noise ที่มากกว่า</li>
+      <li><strong>GARCH ไม่เหมาะกับ BTC</strong> เพราะเห็น return แค่วันละค่า และ return วันจันทร์ครอบ 72 ชั่วโมงขณะที่เป้าหมายครอบ 24 ชั่วโมง</li>
+      <li><strong>ข้อจำกัด</strong> มี test year เดียว และรายงาน DM test 35 ครั้งต่อช่วง จึงคาดได้ว่าจะมี p ต่ำกว่า 0.05 บางค่าโดยบังเอิญ ผมรายงานทุก test ไม่ใช่เฉพาะที่มีนัยสำคัญ</li>
+    </ul>
+    <ul lang="en">
+      <li><strong>LightGBM broke down when volatility left the training range.</strong> The test year was far more volatile for gold and oil. On GLD, LightGBM went from −3.6% (development) to +24.7% (test) against HAR-RV, because tree models cannot forecast above levels seen in training. This explanation is a diagnostic made after the test (D-048), not tested in advance.</li>
+      <li><strong>Cross-asset features added more noise than information.</strong> HAR-X adds 12 columns fitted on roughly 1,000-1,500 rows, and the extra flexibility cost more than it carried.</li>
+      <li><strong>GARCH is a poor fit for BTC RV.</strong> It sees one return per session, and a Monday return spans 72 hours of trading while the target spans 24.</li>
+      <li><strong>Limits.</strong> There is one test year, and 35 DM tests are reported per period, so a few p-values below 0.05 are expected by chance. All tests are reported, not only the significant ones.</li>
+    </ul>
+  </section>
+
+  <p class="wrap code-link"><a href="https://github.com/Nantapatpluem/portfolio-projects/tree/main/cross-asset-volatility"><span lang="th">ดูโค้ดและรายงานบน GitHub</span><span lang="en">Code and reports on GitHub</span></a></p>
+
+  <nav class="case-nav wrap" data-label-th="กรณีศึกษา" data-label-en="Case studies" aria-label="Case studies">
+    <a href="../index.html"><span lang="th">หน้าแรก</span><span lang="en">Home</span></a>
+    <a href="macro-news.html"><span lang="th">ถัดไป: Macro News &amp; Volatility</span><span lang="en">Next: Macro News &amp; Volatility</span></a>
+  </nav>
+</main>
+
+<footer class="site-footer wide">
+  <p lang="th">ไม่ใช่คำแนะนำการลงทุน</p>
+  <p lang="en">Not investment advice.</p>
+</footer>
+</body>
+</html>

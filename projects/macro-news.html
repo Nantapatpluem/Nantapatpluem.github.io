@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Case study: do unscheduled macro news events add information about next-period volatility beyond price and volume?">
+<title data-title-th="Macro News &amp; Volatility: case study" data-title-en="Macro News &amp; Volatility: case study">Macro News &amp; Volatility: case study</title>
+<script>(function(){try{var s=localStorage.getItem("site-lang"),t=localStorage.getItem("site-theme")}catch(e){}var d=document.documentElement,l=(s==="th"||s==="en")?s:((navigator.language||"").toLowerCase().indexOf("th")===0?"th":"en");d.setAttribute("data-lang",l);d.setAttribute("lang",l);if(t==="light"||t==="dark")d.setAttribute("data-theme",t)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/site-config.js" defer></script>
+<script src="../js/main.js" defer></script>
+</head>
+<body>
+<header class="site-header wide">
+  <a class="home" href="../index.html"><span lang="th" data-site="nameTh">นันทพัทธ์ ใจการุณ</span><span lang="en" data-site="nameEn">Nantapat Jaikaroon</span></a>
+  <div class="controls">
+    <button type="button" class="lang-toggle"><span data-l="th" class="off">TH</span> | <span data-l="en" class="on">EN</span><span class="sr-only" lang="th"> (เปลี่ยนภาษา)</span><span class="sr-only" lang="en"> (change language)</span></button>
+    <button type="button" class="theme-toggle" data-label-th="ธีมมืด" data-label-en="Dark theme" aria-label="Dark theme" aria-pressed="false">◐</button>
+  </div>
+</header>
+
+<main class="case-body">
+  <header class="case-head wrap">
+    <p><a href="../index.html#featured"><span lang="th">กลับหน้าแรก</span><span lang="en">Back to home</span></a></p>
+    <h1><span lang="th">Macro News Intelligence &amp; Cross-Asset Volatility</span><span lang="en">Macro News Intelligence &amp; Cross-Asset Volatility</span></h1>
+    <p class="lede" lang="th">ข่าวเศรษฐกิจมหภาคที่ไม่ได้นัดเวลาไว้ช่วยพยากรณ์ volatility ได้มากกว่าข้อมูลราคาและ volume ไหม คำตอบคือแทบไม่ช่วย ดีขึ้นเล็กน้อยและไม่เสถียร เฉพาะ BTCUSDT</p>
+    <p class="lede" lang="en">Do unscheduled macro news events add information about next-period volatility beyond price and volume? Largely no: a small, unstable gain, and only for BTCUSDT.</p>
+    <dl class="case-facts">
+      <dt><span lang="th">บทบาท</span><span lang="en">Role</span></dt>
+      <dd><span lang="th">โปรเจกต์ส่วนตัว ออกแบบการทดลอง ทำ pipeline ข้อมูลและข่าว NLP โมเดล และ dashboard</span><span lang="en">Personal project: study design, data and news pipeline, NLP, models and dashboard</span></dd>
+      <dt><span lang="th">ข้อมูล</span><span lang="en">Data</span></dt>
+      <dd><span lang="th">แท่งราคา 1 ชั่วโมง: BTCUSDT จาก Binance, SPY, GLD, USO, UUP จาก Alpaca และข่าว Benzinga ผ่าน Alpaca, 2020-01-01 ถึง 2025-12-31</span><span lang="en">1-hour bars: BTCUSDT from Binance, SPY, GLD, USO, UUP from Alpaca, and Benzinga news via Alpaca, 2020-01-01 to 2025-12-31</span></dd>
+      <dt><span lang="th">เครื่องมือ</span><span lang="en">Tools</span></dt>
+      <dd>Python, uv, FinBERT, LightGBM, statsmodels, Streamlit, pytest</dd>
+      <dt><span lang="th">ผล</span><span lang="en">Result</span></dt>
+      <dd><span lang="th">มีนัยสำคัญ 2 จาก 15 test (Holm) ทั้งคู่เป็น BTCUSDT และไม่เกิดซ้ำในปี 2024</span><span lang="en">2 of 15 Holm-adjusted tests significant, both BTCUSDT, not repeated in 2024</span></dd>
+    </dl>
+  </header>
+
+  <section class="wrap">
+    <h2><span lang="th">โจทย์</span><span lang="en">Problem</span></h2>
+    <p lang="th">ข่าวใหญ่มักตามมาด้วยตลาดที่ผันผวน แต่สิ่งที่สำคัญสำหรับการพยากรณ์คือ เมื่อรู้ volatility ล่าสุดแล้ว ข่าวยังให้ข้อมูลเพิ่มไหม ผมทดสอบกับ 5 สินทรัพย์ (Bitcoin, หุ้นสหรัฐ, ทอง, น้ำมัน, ดอลลาร์) ทั้งหมดเป็นการพยากรณ์ out-of-sample บนการแบ่งข้อมูลที่ล็อกไว้แล้ว</p>
+    <p lang="en">Big news is often followed by volatile markets. The question that matters for forecasting is stricter: once recent volatility is known, does the news add anything? I tested this on five assets (Bitcoin, US equities, gold, oil, the dollar), out of sample on a frozen split.</p>
+    <p lang="th">ผล null คือคำตอบที่รับได้ ผมตั้งไว้ตั้งแต่ต้น และผลทั้งหมดเป็น association ไม่ได้บอกว่าข่าวเป็นสาเหตุของการเคลื่อนไหว</p>
+    <p lang="en">A null result was accepted as a valid answer from the start, and every result is predictive association, not a claim that news caused the move.</p>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">วิธีทำ</span><span lang="en">Process</span></h2>
+    <ul lang="th">
+      <li><strong>ล็อกแผนก่อนดูผล</strong> pre-registration ถูก freeze ใน <code>configs/preregistration.yaml</code> ตั้งแต่ Gate 3 และไม่มีการเปลี่ยนหลังจากนั้น</li>
+      <li><strong>แบ่งข้อมูลตามเวลา</strong> train 2020-2023, validation 2024, test 2025 รัน test ครั้งเดียว</li>
+      <li><strong>ทำ event set</strong> รวมข่าวซ้ำเป็น event เดียว แยกข่าวที่นัดเวลา (เช่นตัวเลขเศรษฐกิจ) ออกจากข่าวที่ไม่ได้นัด และใช้ข้อความข่าวเฉพาะเมื่อแก้ไขครั้งล่าสุดก่อนแท่งราคาเปิด เพื่อกัน look-ahead</li>
+      <li><strong>เปรียบเทียบ 3 โมเดล</strong> market-only, text-only และ market + text วัดด้วย QLIKE ทดสอบด้วย Diebold-Mariano (HAC, HLN) และปรับ Holm ข้าม 15 คู่ asset × horizon</li>
+      <li><strong>label ของข่าวสร้างโดย Claude</strong> ไม่ใช่คนติดป้าย (owner override ที่ Gate 4) ค่า F1 ของโมเดล NLP จึงวัดความตรงกับ label ของ Claude เท่านั้น</li>
+    </ul>
+    <ul lang="en">
+      <li><strong>Plan frozen before results.</strong> The pre-registration was frozen in <code>configs/preregistration.yaml</code> at Gate 3, with no deviations afterwards.</li>
+      <li><strong>Time-ordered split.</strong> Train 2020-2023, validation 2024, test 2025, run once.</li>
+      <li><strong>Event set.</strong> Duplicate headlines are merged into one event, scheduled releases are separated from unscheduled news, and headline text is used only when its last edit precedes the bar open, to prevent look-ahead.</li>
+      <li><strong>Three models compared.</strong> Market-only, text-only and market + text, scored with QLIKE, tested with Diebold-Mariano (HAC, HLN) and Holm-adjusted over the 15 asset × horizon pairs.</li>
+      <li><strong>News labels are Claude-generated</strong>, not human-annotated (owner override at Gate 4), so NLP scores measure agreement with Claude's labels only.</li>
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">สิ่งที่ส่งมอบ</span><span lang="en">Solution</span></h2>
+    <p lang="th">package Python <code>macrovol</code> ที่รันทีละ stage ผ่าน CLI ตั้งแต่ตรวจ feed, ทำ event, ติด label, ฝึกโมเดล NLP (FinBERT) ไปจนถึง ablation และ event study พร้อม gate report ทุกขั้น และ dashboard ที่มีหน้า "Coverage and limitations" แยกให้เห็นข้อจำกัดชัดเจน</p>
+    <p lang="en">A Python package, <code>macrovol</code>, run stage by stage from a CLI: feed checks, event building, labeling, NLP models (FinBERT), ablation and event study, with a gate report at each step, plus a dashboard that has its own "Coverage and limitations" page.</p>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">ผลลัพธ์</span><span lang="en">Results</span></h2>
+    <p lang="th">ช่วง test 2025 เปรียบเทียบ market + text กับ market-only ค่า QLIKE ยิ่งต่ำยิ่งดี ค่าที่เปลี่ยนอยู่ระหว่าง −1.94% ถึง +2.52% มีแค่ 2 cell ที่ผ่าน Holm ที่ระดับ 0.05</p>
+    <p lang="en">Test 2025, market + text against market-only. Lower QLIKE is better. Changes ranged from −1.94% to +2.52%, and only 2 cells passed Holm at 0.05.</p>
+
+    <div class="table-scroll" lang="th" tabindex="0" role="region" data-label-th="ตาราง QLIKE ของ market + text เทียบ market-only" data-label-en="QLIKE table: market + text vs market-only" aria-label="QLIKE table: market + text vs market-only">
+      <table class="result-table">
+        <thead><tr><th>สินทรัพย์, horizon</th><th class="num">market-only</th><th class="num">market + text</th><th class="num">เปลี่ยน</th><th class="num">p_holm</th></tr></thead>
+        <tbody>
+          <tr><td>BTCUSDT, 1 ชม.</td><td class="num">0.4413</td><td class="num">0.4386</td><td class="num sig">−0.61%</td><td class="num sig">0.03571</td></tr>
+          <tr><td>BTCUSDT, 4 ชม.</td><td class="num">0.3428</td><td class="num">0.3371</td><td class="num sig">−1.66%</td><td class="num sig">0.007414</td></tr>
+          <tr><td>BTCUSDT, 24 ชม.</td><td class="num">0.2916</td><td class="num">0.2860</td><td class="num">−1.94%</td><td class="num">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-scroll" lang="en" tabindex="0" role="region" data-label-th="ตาราง QLIKE ของ market + text เทียบ market-only" data-label-en="QLIKE table: market + text vs market-only" aria-label="QLIKE table: market + text vs market-only">
+      <table class="result-table">
+        <thead><tr><th>Asset, horizon</th><th class="num">market-only</th><th class="num">market + text</th><th class="num">Change</th><th class="num">p_holm</th></tr></thead>
+        <tbody>
+          <tr><td>BTCUSDT, 1h</td><td class="num">0.4413</td><td class="num">0.4386</td><td class="num sig">−0.61%</td><td class="num sig">0.03571</td></tr>
+          <tr><td>BTCUSDT, 4h</td><td class="num">0.3428</td><td class="num">0.3371</td><td class="num sig">−1.66%</td><td class="num sig">0.007414</td></tr>
+          <tr><td>BTCUSDT, 24h</td><td class="num">0.2916</td><td class="num">0.2860</td><td class="num">−1.94%</td><td class="num">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="source"><span lang="th">ตัวหนา = p_holm &lt; 0.05 ที่มา: reports/final_report.md ส่วนที่ 3 (run 20261105-032315_ablation-test)</span><span lang="en">Bold = p_holm &lt; 0.05. Source: reports/final_report.md, section 3 (run 20261105-032315_ablation-test)</span></p>
+
+    <div class="table-scroll" lang="th" tabindex="0" role="region" data-label-th="ตารางช่วง QLIKE ที่เปลี่ยนตามกลุ่ม" data-label-en="QLIKE change range by group" aria-label="QLIKE change range by group">
+      <table class="result-table">
+        <thead><tr><th>กลุ่ม</th><th>ช่วง QLIKE ที่เปลี่ยน (test 2025)</th><th>p_holm</th></tr></thead>
+        <tbody>
+          <tr><td>ETF 4 ตัว (SPY, GLD, USO, UUP) × 3 horizon</td><td>−1.16% ถึง +2.52%</td><td>1 ทุก cell</td></tr>
+          <tr><td>text-only เทียบ market-only</td><td>แย่กว่า 22.57% ถึง 182.74%</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-scroll" lang="en" tabindex="0" role="region" data-label-th="ตารางช่วง QLIKE ที่เปลี่ยนตามกลุ่ม" data-label-en="QLIKE change range by group" aria-label="QLIKE change range by group">
+      <table class="result-table">
+        <thead><tr><th>Group</th><th>QLIKE change range (test 2025)</th><th>p_holm</th></tr></thead>
+        <tbody>
+          <tr><td>4 ETFs (SPY, GLD, USO, UUP) × 3 horizons</td><td>−1.16% to +2.52%</td><td>1 in every cell</td></tr>
+          <tr><td>text-only vs market-only</td><td>22.57% to 182.74% worse</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="source"><span lang="th">ที่มา: reports/final_report.md, reports/gate7_ablation.md</span><span lang="en">Source: reports/final_report.md, reports/gate7_ablation.md</span></p>
+
+    <ul lang="th">
+      <li>ผลดีขึ้นของ BTCUSDT ไม่เกิดใน validation 2024: market + text เปลี่ยน QLIKE +0.30% (1 ชม.), +0.07% (4 ชม.) และ −1.42% (24 ชม.) โดย p_holm เป็น 1 ทั้งหมด จึงไม่ควรอ่านว่าเป็นผลที่เสถียร</li>
+      <li>ข่าวอย่างเดียวแย่กว่าข้อมูลตลาดมาก ข่าวจึงเป็นได้แค่ส่วนเสริมเล็กๆ</li>
+    </ul>
+    <ul lang="en">
+      <li>The BTCUSDT gain did not appear in validation 2024: market + text changed QLIKE by +0.30% (1h), +0.07% (4h) and −1.42% (24h), with every p_holm equal to 1, so it should not be read as a stable effect.</li>
+      <li>Text alone is far worse than market data, so news can be at most a small add-on.</li>
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2><span lang="th">สิ่งที่ได้เรียนรู้</span><span lang="en">Learnings</span></h2>
+    <ul lang="th">
+      <li><strong>"ข่าวมาพร้อมความผันผวน" กับ "ข่าวช่วยพยากรณ์" เป็นคนละคำถาม</strong> event study (post-hoc) พบว่าหลังข่าว GLD ผันผวนกว่าช่วงควบคุมชัดเจน แต่เมื่อรู้ volatility ล่าสุดแล้ว ข่าวไม่ได้ช่วยพยากรณ์ GLD เลย</li>
+      <li><strong>ต้องบอกให้ชัดว่าอะไรคิดทีหลัง</strong> กลุ่มควบคุมของ event study ถูกเลือกหลังเห็นว่าแบบที่วางแผนไว้ใช้ไม่ได้ ผมจึงติดป้าย post-hoc ทุกที่ที่ใช้</li>
+      <li><strong>ข้อจำกัด</strong> เวลาเผยแพร่ข่าวของ Benzinga อาจช้ากว่าเหตุการณ์จริง, ไม่ได้วัด surprise ของตัวเลขเศรษฐกิจที่นัดไว้เพราะไม่มีแหล่ง consensus, และ label มาจาก Claude ไม่ใช่คน</li>
+    </ul>
+    <ul lang="en">
+      <li><strong>"News comes with volatility" and "news helps forecast volatility" are different questions.</strong> A post-hoc event study found clearly higher volatility after news bars for GLD, yet once recent volatility is known, news adds nothing to GLD forecasts.</li>
+      <li><strong>Say plainly what was decided after the fact.</strong> The event-study control was chosen after the planned one failed, so it is labeled post-hoc wherever it is used.</li>
+      <li><strong>Limits.</strong> Benzinga publish times can lag the real event, scheduled-release surprises are not measured because no consensus source is used, and labels come from Claude, not people.</li>
+    </ul>
+  </section>
+
+  <p class="wrap code-link"><a href="https://github.com/Nantapatpluem/portfolio-projects/tree/main/macro-news-volatility"><span lang="th">ดูโค้ดและรายงานบน GitHub</span><span lang="en">Code and reports on GitHub</span></a></p>
+
+  <nav class="case-nav wrap" data-label-th="กรณีศึกษา" data-label-en="Case studies" aria-label="Case studies">
+    <a href="volatility.html"><span lang="th">ก่อนหน้า: Cross-Asset Volatility</span><span lang="en">Previous: Cross-Asset Volatility</span></a>
+    <a href="eco-project.html"><span lang="th">ถัดไป: Eco-project</span><span lang="en">Next: Eco-project</span></a>
+  </nav>
+</main>
+
+<footer class="site-footer wide">
+  <p lang="th">ไม่ใช่คำแนะนำการลงทุน</p>
+  <p lang="en">Not investment advice.</p>
+</footer>
+</body>
+</html>
