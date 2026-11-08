@@ -5,10 +5,9 @@
   var LANG_KEY = "site-lang";
   var THEME_KEY = "site-theme";
 
-  function resolveLang(stored, navLang) {
-    if (stored === "th" || stored === "en") return stored;
-    if (typeof navLang === "string" && navLang.toLowerCase().indexOf("th") === 0) return "th";
-    return "en";
+  /* English is the default on every new visit; a Thai choice lasts for this tab's session only. */
+  function resolveLang(stored) {
+    return stored === "th" ? "th" : "en";
   }
 
   function resolveTheme(stored) {
@@ -46,6 +45,10 @@
 
   function storage() {
     try { return window.localStorage; } catch (e) { return undefined; }
+  }
+
+  function sessionStore() {
+    try { return window.sessionStorage; } catch (e) { return undefined; }
   }
 
   function currentTheme(root) {
@@ -118,8 +121,9 @@
 
   function init() {
     var store = storage();
+    var langStore = sessionStore();
     var root = document.documentElement;
-    applyLang(resolveLang(safeGet(store, LANG_KEY), navigator.language));
+    applyLang(resolveLang(safeGet(langStore, LANG_KEY)));
     applyTheme(resolveTheme(safeGet(store, THEME_KEY)));
     fillSite(window.SITE);
 
@@ -127,7 +131,7 @@
     for (var i = 0; i < langBtns.length; i++) {
       langBtns[i].addEventListener("click", function () {
         var next = root.getAttribute("data-lang") === "th" ? "en" : "th";
-        safeSet(store, LANG_KEY, next);
+        safeSet(langStore, LANG_KEY, next);
         applyLang(next);
       });
     }
